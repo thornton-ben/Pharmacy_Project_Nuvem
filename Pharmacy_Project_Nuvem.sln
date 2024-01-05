@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pharmacy.Server", "Pharmacy.Server\Pharmacy.Server.csproj", "{408FEC2C-2282-4C70-A9F2-929FA7CB3089}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyProj.Server", "Pharmacy.Server\PharmacyProj.Server.csproj", "{408FEC2C-2282-4C70-A9F2-929FA7CB3089}"
+	ProjectSection(ProjectDependencies) = postProject
+		{987EDBCF-AE8A-4CF3-95DE-1E80661FD302} = {987EDBCF-AE8A-4CF3-95DE-1E80661FD302}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyProj.Database", "Pharmacy.Database\PharmacyProj.Database.csproj", "{987EDBCF-AE8A-4CF3-95DE-1E80661FD302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987EDBCF-AE8A-4CF3-95DE-1E80661FD302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987EDBCF-AE8A-4CF3-95DE-1E80661FD302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987EDBCF-AE8A-4CF3-95DE-1E80661FD302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987EDBCF-AE8A-4CF3-95DE-1E80661FD302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
