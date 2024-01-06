@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<PharmacyDbContext>(options =>
-            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmaProject.Server"))
+            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Database"))
     );
 
 builder.Services.AddScoped<IPharmacyService, IPharmacyService>();
