@@ -38,11 +38,11 @@ namespace PharmacyProj.Database.Migrations
                 columns: new[] { "PharmacyId", "Address", "City", "CreatedDate", "FilledPrescriptions", "Name", "State", "UpdatedDate", "Zip" },
                 values: new object[,]
                 {
-                    { 1, "123 Main St", "Dallas", new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4478), 50, "Walgreens", "TX", null, "12345" },
-                    { 2, "456 Oak St", "Frisco", new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4508), 75, "CVS", "TX", null, "23456" },
-                    { 3, "789 Pine St", "Richardson", new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4511), 100, "Walmart Pharmacy", "TX", null, "34567" },
-                    { 4, "101 Elm St", "McKinney", new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4513), 125, "Kroger Pharmacy", "TX", null, "45678" },
-                    { 5, "202 Birch St", "Frisco", new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4515), 150, "HEB Pharmacy", "TX", null, "56789" }
+                    { 1, "123 Main St", "Dallas", new DateTime(2024, 1, 7, 16, 59, 25, 652, DateTimeKind.Local).AddTicks(4699), 50, "Walgreens", "TX", null, "12345" },
+                    { 2, "456 Oak St", "Frisco", new DateTime(2024, 1, 7, 16, 59, 25, 652, DateTimeKind.Local).AddTicks(4738), 75, "CVS", "TX", null, "23456" },
+                    { 3, "789 Pine St", "Richardson", new DateTime(2024, 1, 7, 16, 59, 25, 652, DateTimeKind.Local).AddTicks(4741), 100, "Walmart Pharmacy", "TX", null, "34567" },
+                    { 4, "101 Elm St", "McKinney", new DateTime(2024, 1, 7, 16, 59, 25, 652, DateTimeKind.Local).AddTicks(4744), 125, "Kroger Pharmacy", "TX", null, "45678" },
+                    { 5, "202 Birch St", "Frisco", new DateTime(2024, 1, 7, 16, 59, 25, 652, DateTimeKind.Local).AddTicks(4746), 150, "HEB Pharmacy", "TX", null, "56789" }
                 });
         }
 

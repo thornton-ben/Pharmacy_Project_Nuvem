@@ -20,7 +20,6 @@ namespace PharmacyProj.Server.Services
                 .Skip((parameters.Page - 1) * parameters.ItemsPerPage)
                 .Take(parameters.ItemsPerPage)
                 .ToListAsync();
-            //return await _dbContext.Pharmacy.ToListAsync();
         }
 
         public async Task<Pharmacy?> GetPharmacyByIdAsync(int pharmacyId)
