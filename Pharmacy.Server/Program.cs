@@ -2,6 +2,7 @@ using PharmacyProj.Database;
 using Microsoft.EntityFrameworkCore;
 using PharmacyProj.Server;
 using PharmacyProj.Server.Interfaces;
+using PharmacyProj.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddDbContext<PharmacyDbContext>(options =>
             options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Database"))
     );
 
-builder.Services.AddScoped<IPharmacyService, IPharmacyService>();
+builder.Services.AddScoped<IPharmacyService, PharmacyService>();
 
 
 var app = builder.Build();

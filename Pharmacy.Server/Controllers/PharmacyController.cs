@@ -22,11 +22,11 @@ namespace PharmacyProj.Server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> GetPharmacyList()
+        public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
         {
             try
             {
-                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync();
+                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(@params);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -36,31 +36,61 @@ namespace PharmacyProj.Server.Controllers
             }
         }
 
-        [HttpGet("{pharmacyId}")]
+        [HttpGet("{pharmacyId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> GetPharmacyById(int id)
+        public async Task<ActionResult<Pharmacy>> GetPharmacyById(int pharmacyId)
         {
             try
             {
-                Pharmacy? result = await _pharmacyService.GetPharmacyByIdAsync(id);
+                Pharmacy? result = await _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
                 return result == null ? NotFound() : Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
+        [HttpPut("{pharmacyId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Pharmacy>> UpdatePharmacyByIdAsync(int pharmacyId, [FromBody]Pharmacy pharmacy)
+        {
+            if (pharmacy == null)
+            {
+                _logger.LogError("Pharmacy sent from client is null.");
+                return BadRequest("Pharmacy is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid owner ojbect sent from client.");
+                return BadRequest("Invalid model object");
+            }
+
+            var dbPharmacy = _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
+            if (dbPharmacy == null)
+            {
+                _logger.LogError($"Pharmacy with pharmacyId: {pharmacyId}, hasn't been found in database.");
+                return NotFound();
+            }
+
+            await _pharmacyService.UpdatePharmacyAsync(pharmacy);
+
+            return NoContent();
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Pharmacy>> UpdatePharmacy(Pharmacy pharmacy)
+        public async Task<ActionResult<Pharmacy>> CreatePharmacyAsync(Pharmacy pharmacy)
         {
+            //TODO: need to check to see if pharmacy alread exists
             try
             {
-                Pharmacy result = await _pharmacyService.UpdatePharmacyAsync(pharmacy);
+                Pharmacy result = await _pharmacyService.CreatePharmacyAsync(pharmacy);
                 return Ok(result);
             }
             catch (Exception ex)
