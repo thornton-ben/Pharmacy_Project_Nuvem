@@ -41,7 +41,8 @@ namespace PharmacyProj.Database.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FilledPrescriptions")
+                    b.Property<int?>("FilledPrescriptions")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -69,7 +70,7 @@ namespace PharmacyProj.Database.Migrations
                             PharmacyId = 1,
                             Address = "123 Main St",
                             City = "Dallas",
-                            CreatedDate = new DateTime(2024, 1, 6, 15, 50, 4, 314, DateTimeKind.Local).AddTicks(4836),
+                            CreatedDate = new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4478),
                             FilledPrescriptions = 50,
                             Name = "Walgreens",
                             State = "TX",
@@ -80,7 +81,7 @@ namespace PharmacyProj.Database.Migrations
                             PharmacyId = 2,
                             Address = "456 Oak St",
                             City = "Frisco",
-                            CreatedDate = new DateTime(2024, 1, 6, 15, 50, 4, 314, DateTimeKind.Local).AddTicks(4873),
+                            CreatedDate = new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4508),
                             FilledPrescriptions = 75,
                             Name = "CVS",
                             State = "TX",
@@ -91,7 +92,7 @@ namespace PharmacyProj.Database.Migrations
                             PharmacyId = 3,
                             Address = "789 Pine St",
                             City = "Richardson",
-                            CreatedDate = new DateTime(2024, 1, 6, 15, 50, 4, 314, DateTimeKind.Local).AddTicks(4876),
+                            CreatedDate = new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4511),
                             FilledPrescriptions = 100,
                             Name = "Walmart Pharmacy",
                             State = "TX",
@@ -102,7 +103,7 @@ namespace PharmacyProj.Database.Migrations
                             PharmacyId = 4,
                             Address = "101 Elm St",
                             City = "McKinney",
-                            CreatedDate = new DateTime(2024, 1, 6, 15, 50, 4, 314, DateTimeKind.Local).AddTicks(4878),
+                            CreatedDate = new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4513),
                             FilledPrescriptions = 125,
                             Name = "Kroger Pharmacy",
                             State = "TX",
@@ -113,7 +114,7 @@ namespace PharmacyProj.Database.Migrations
                             PharmacyId = 5,
                             Address = "202 Birch St",
                             City = "Frisco",
-                            CreatedDate = new DateTime(2024, 1, 6, 15, 50, 4, 314, DateTimeKind.Local).AddTicks(4880),
+                            CreatedDate = new DateTime(2024, 1, 7, 16, 47, 46, 523, DateTimeKind.Local).AddTicks(4515),
                             FilledPrescriptions = 150,
                             Name = "HEB Pharmacy",
                             State = "TX",
