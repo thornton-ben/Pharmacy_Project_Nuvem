@@ -14,14 +14,27 @@ namespace PharmacyProj.Server.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Pharmacy>> GetPharmacyListAsync()
+        public async Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters)
         {
-            return await _dbContext.Pharmacy.ToListAsync();
+            return await _dbContext.Pharmacy.OrderBy(p => p.PharmacyId)
+                .Skip((parameters.Page - 1) * parameters.ItemsPerPage)
+                .Take(parameters.ItemsPerPage)
+                .ToListAsync();
+            //return await _dbContext.Pharmacy.ToListAsync();
         }
 
         public async Task<Pharmacy?> GetPharmacyByIdAsync(int pharmacyId)
         {
             return await _dbContext.Pharmacy.FirstOrDefaultAsync(x => x.PharmacyId == pharmacyId);
+        }
+
+        public async Task<Pharmacy> CreatePharmacyAsync(Pharmacy pharmacy)
+        {
+            pharmacy.CreatedDate = DateTime.Now;
+            _dbContext.Add(pharmacy);
+            await _dbContext.SaveChangesAsync();
+
+            return pharmacy;
         }
 
         public async Task<Pharmacy> UpdatePharmacyAsync(Pharmacy pharmacy)
@@ -32,6 +45,7 @@ namespace PharmacyProj.Server.Services
 
             return pharmacy;
         }
+
 
     }
 }
