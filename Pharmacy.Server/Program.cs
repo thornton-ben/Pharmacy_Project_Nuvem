@@ -1,8 +1,7 @@
-using PharmacyProj.Database;
 using Microsoft.EntityFrameworkCore;
-using PharmacyProj.Server;
-using PharmacyProj.Server.Interfaces;
-using PharmacyProj.Server.Services;
+using Entities;
+using Services.Interfaces;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,5 +38,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
 
 app.Run();
