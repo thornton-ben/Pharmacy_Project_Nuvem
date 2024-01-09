@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Entities
+namespace Pharmacy_Proj.Entities.Entities
 {
     public class Pharmacy
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]
         public int PharmacyId { get; set; }
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]

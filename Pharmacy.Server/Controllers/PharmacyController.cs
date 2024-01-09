@@ -1,7 +1,7 @@
-using Entities.Entities;
+using Pharmacy_Proj.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Services.Helpers;
-using Services.Interfaces;
+using PharmacyProj.Services.Helpers;
+using PharmacyProj.Services.Interfaces;
 
 namespace PharmacyProj.Server.Controllers
 {

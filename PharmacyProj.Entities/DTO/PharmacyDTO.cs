@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities.DTO
+namespace Pharmacy_Proj.Entities.DTO
 {
     public class PharmacyDTO
     {

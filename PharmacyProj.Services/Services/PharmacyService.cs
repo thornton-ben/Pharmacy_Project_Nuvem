@@ -1,10 +1,10 @@
-﻿using Services.Helpers;
-using Services.Interfaces;
-using Entities;
+﻿using Pharmacy_Proj.Entities;
 using Microsoft.EntityFrameworkCore;
-using Entities.Entities;
+using Pharmacy_Proj.Entities.Entities;
+using PharmacyProj.Services.Helpers;
+using PharmacyProj.Services.Interfaces;
 
-namespace Services.Services
+namespace PharmacyProj.Services.Services
 {
     public class PharmacyService : IPharmacyService
     {

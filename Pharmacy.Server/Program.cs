@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Entities;
-using Services.Interfaces;
-using Services.Services;
+using Pharmacy_Proj.Entities;
+using PharmacyProj.Services.Interfaces;
+using PharmacyProj.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<PharmacyDbContext>(options =>
-            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Database"))
+            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Entities"))
     );
 
 builder.Services.AddScoped<IPharmacyService, PharmacyService>();
@@ -38,6 +38,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
+//app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
 
 app.Run();

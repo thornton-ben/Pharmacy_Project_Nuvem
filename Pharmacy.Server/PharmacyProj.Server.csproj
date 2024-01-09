@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PharmacyProj.Server</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\PharmacyProj.Entities\PharmacyProj.Entities.csproj" />
+    <ProjectReference Include="..\PharmacyProj.Services\PharmacyProj.Services.csproj" />
   </ItemGroup>
 
 </Project>

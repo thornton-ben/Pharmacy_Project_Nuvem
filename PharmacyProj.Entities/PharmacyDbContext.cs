@@ -1,12 +1,12 @@
-﻿using Entities.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Pharmacy_Proj.Entities.Entities;
 
-namespace Entities
+namespace Pharmacy_Proj.Entities
 {
     public class PharmacyDbContext : DbContext
     {
@@ -20,7 +20,6 @@ namespace Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Pharmacy>().HasKey(x => x.PharmacyId);
             modelBuilder.Entity<Pharmacy>().HasData(
                 new Pharmacy { PharmacyId = 1, Name = "Walgreens", Address = "123 Main St", City = "Dallas", State = "TX", Zip = "12345", FilledPrescriptions = 50, CreatedDate = DateTime.Now },
                 new Pharmacy { PharmacyId = 2, Name = "CVS", Address = "456 Oak St", City = "Frisco", State = "TX", Zip = "23456", FilledPrescriptions = 75, CreatedDate = DateTime.Now },
