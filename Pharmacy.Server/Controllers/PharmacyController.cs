@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using PharmacyProj.Database.Models;
-using PharmacyProj.Server.Interfaces;
+using PharmacyProj.Entities.Entities;
+using PharmacyProj.Services.Helpers;
+using PharmacyProj.Services.Interfaces;
 
 namespace PharmacyProj.Server.Controllers
 {
@@ -56,19 +57,20 @@ namespace PharmacyProj.Server.Controllers
         [HttpPut("{pharmacyId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> UpdatePharmacyByIdAsync(int pharmacyId, [FromBody]Pharmacy pharmacy)
+        public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int pharmacyId, [FromBody]Pharmacy pharmacy)
         {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid owner ojbect sent from client.");
+                return BadRequest("Invalid model object");
+            }
+
             if (pharmacy == null)
             {
                 _logger.LogError("Pharmacy sent from client is null.");
                 return BadRequest("Pharmacy is null");
             }
 
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid owner ojbect sent from client.");
-                return BadRequest("Invalid model object");
-            }
 
             var dbPharmacy = _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
             if (dbPharmacy == null)
@@ -85,7 +87,7 @@ namespace PharmacyProj.Server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Pharmacy>> CreatePharmacyAsync(Pharmacy pharmacy)
+        public async Task<ActionResult<Pharmacy>> CreatePharmacy(Pharmacy pharmacy)
         {
             //TODO: need to check to see if pharmacy alread exists
             try

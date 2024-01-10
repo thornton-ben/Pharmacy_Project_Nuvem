@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PharmacyProj.Database;
-using PharmacyProj.Database.Models;
-using PharmacyProj.Server.Interfaces;
+using PharmacyProj.Entities.Entities;
+using PharmacyProj.Services.Helpers;
+using PharmacyProj.Services.Interfaces;
 
-namespace PharmacyProj.Server.Services
+namespace PharmacyProj.Services.Services
 {
     public class PharmacyService : IPharmacyService
     {
+
         private readonly PharmacyDbContext _dbContext;
 
         public PharmacyService(PharmacyDbContext dbContext)
@@ -44,7 +45,5 @@ namespace PharmacyProj.Server.Services
 
             return pharmacy;
         }
-
-
     }
 }
