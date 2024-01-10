@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Pharmacy_Proj.Entities;
+using PharmacyProj.Services;
 using PharmacyProj.Services.Interfaces;
 using PharmacyProj.Services.Services;
 
@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<PharmacyDbContext>(options =>
+builder.Services.AddDbContextPool<PharmacyDbContext>(options =>
             options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Entities"))
     );
 

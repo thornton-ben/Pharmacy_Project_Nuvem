@@ -1,5 +1,5 @@
-using Pharmacy_Proj.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
+using PharmacyProj.Entities.Entities;
 using PharmacyProj.Services.Helpers;
 using PharmacyProj.Services.Interfaces;
 

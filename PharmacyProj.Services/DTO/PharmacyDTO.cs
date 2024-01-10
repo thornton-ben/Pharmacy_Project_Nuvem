@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Pharmacy_Proj.Entities.DTO
+namespace PharmacyProj.Services.DTO
 {
     public class PharmacyDTO
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PharmacyId { get; set; }
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]

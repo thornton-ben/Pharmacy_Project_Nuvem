@@ -1,6 +1,5 @@
-﻿using Pharmacy_Proj.Entities;
-using Microsoft.EntityFrameworkCore;
-using Pharmacy_Proj.Entities.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PharmacyProj.Entities.Entities;
 using PharmacyProj.Services.Helpers;
 using PharmacyProj.Services.Interfaces;
 
