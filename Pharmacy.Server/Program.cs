@@ -38,6 +38,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-//app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
 
 app.Run();
