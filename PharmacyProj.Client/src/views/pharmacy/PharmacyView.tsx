@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import "./Pharmacy.css"
+import "./PharmacyView.css"
 import {
   getPharmacyData,
   fetchPharmacyListAsync,
