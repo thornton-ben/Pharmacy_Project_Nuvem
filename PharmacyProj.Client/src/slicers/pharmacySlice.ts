@@ -13,12 +13,8 @@ const initialState: IState = {
 
 export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[]>(
   "pharmacy/fetchList",
-  async (_, { signal }) => {
-    const cancelSource = axios.CancelToken.source()
-    signal.addEventListener("abort", () => {
-      cancelSource.cancel()
-    })
-    const list = await pharmacyService.getPharmacyList()
+  async (page:number, id:number) => {    
+    const list = await pharmacyService.getPharmacyList(page, id)
     return [...list]
   },
 )

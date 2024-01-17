@@ -9,19 +9,23 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks"
 export const PharmacyView = () => {
   const pharmacyList = useAppSelector(getPharmacyData)
   const dispatch = useAppDispatch()
-  const [gridRows, setGridRows] = useState(pharmacyList)
-
-  useEffect(() => {
-    setGridRows(pharmacyList)
-  }, [pharmacyList])
+  const [pharmacyGridRows, setGridRows] = useState(pharmacyList)
 
   useEffect(() => {
     dispatch(fetchPharmacyListAsync())
   }, [])
-
+  
+  useEffect(() => {
+    setGridRows(pharmacyList)
+    console.log(pharmacyGridRows)
+  }, [pharmacyList])
+  
   return (
     <>
       <div>Pharmacy View</div>
+      <div>
+        {/* map grid row? */}
+      </div>
       <div>Will pass pharmacy list to grid component</div>
     </>
   )

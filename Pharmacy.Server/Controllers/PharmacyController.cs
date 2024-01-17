@@ -23,11 +23,13 @@ namespace PharmacyProj.Server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
         public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
         {
             try
             {
-                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(@params);
+                var itemsPerPage = 5;
+                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(@params, itemsPerPage);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -37,22 +39,22 @@ namespace PharmacyProj.Server.Controllers
             }
         }
 
-        [HttpGet("{pharmacyId:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> GetPharmacyById(int pharmacyId)
-        {
-            try
-            {
-                Pharmacy? result = await _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
-                return result == null ? NotFound() : Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpGet("{pharmacyId:int}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<ActionResult<Pharmacy>> GetPharmacyById(int pharmacyId)
+        //{
+        //    try
+        //    {
+        //        Pharmacy? result = await _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
+        //        return result == null ? NotFound() : Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpPut("{pharmacyId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

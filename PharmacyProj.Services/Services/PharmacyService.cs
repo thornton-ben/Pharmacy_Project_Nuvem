@@ -15,12 +15,16 @@ namespace PharmacyProj.Services.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters)
+        public async Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters, int itemsPerPage)
         {
-            return await _dbContext.Pharmacy.OrderBy(p => p.PharmacyId)
-                .Skip((parameters.Page - 1) * parameters.ItemsPerPage)
-                .Take(parameters.ItemsPerPage)
-                .ToListAsync();
+            if (parameters.Id == null)
+            {
+                return await _dbContext.Pharmacy.OrderBy(p => p.PharmacyId)
+                    .Skip((parameters.Page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
+                    .ToListAsync();
+            }
+            return await _dbContext.Pharmacy.Where(p => parameters.Id.Equals(p.PharmacyId)).ToListAsync();
         }
 
         public async Task<Pharmacy?> GetPharmacyByIdAsync(int pharmacyId)
