@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import IPharmacy from "../interfaces/IPharmacy"
+import { getParams } from "../utilities/getParams"
 import { pharmacyGetUrlFormatter } from "../utilities/formatters/urlFormatter"
 
 const requestConfig: AxiosRequestConfig = {
@@ -7,8 +8,8 @@ const requestConfig: AxiosRequestConfig = {
 }
 //TODO: add params for page and number per page
 export const pharmacyService = {
-  async getPharmacyList(page: number = 1, id?: number): Promise<IPharmacy[]> {
-    let url = pharmacyGetUrlFormatter(page, id)
+  async getPharmacyList(parameters: getParams): Promise<IPharmacy[]> {
+    let url = pharmacyGetUrlFormatter(parameters.page, parameters.id)
     const getPharmacyListUrl = "/Pharmacy/" + url
     const response: AxiosResponse<IPharmacy[]> = await axios.get(
       getPharmacyListUrl,

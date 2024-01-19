@@ -1,4 +1,4 @@
-export const pharmacyGetUrlFormatter = (page: number, id?: number) => {
+export const pharmacyGetUrlFormatter = (page?: number, id?: number) => {
     let idUrl = ""
   if (id != undefined) {
     idUrl = `&id=${id}`
