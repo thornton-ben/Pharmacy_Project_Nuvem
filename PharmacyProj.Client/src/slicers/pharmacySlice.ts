@@ -5,11 +5,13 @@ import IState from "../interfaces/IState"
 import { getParams } from "../utilities/getParams"
 import axios from "axios"
 import { RootState } from "../app/store"
+import { StatusCode } from "../utilities/StatusCode"
 
 const initialState: IState = {
   data: [],
   selectedPharmacy: null,
   status: "idle",
+  error: "",
 }
 
 export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[], getParams>(
@@ -21,6 +23,14 @@ export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[], getParams>(
     })
     const list = await pharmacyService.getPharmacyList(parameters)
     return [...list]
+  },
+)
+
+export const savePharmacy = createAsyncThunk<IPharmacy>(
+  "pharmacy/savePharmacy",
+  async (pharmacy: any) => {
+    const updatedPharmacy = await pharmacyService.savePharmacy(pharmacy)
+    return updatedPharmacy
   },
 )
 
@@ -62,9 +72,23 @@ export const PharmacySlice = createSlice({
       .addCase(fetchPharmacyListAsync.rejected, (state) => {
         state.status = "failed"
       })
+      .addCase(savePharmacy.pending, (state) => {
+        state.status = "loading"
+        state.error = ""
+      })
+      .addCase(savePharmacy.fulfilled, (state) => {
+        state.status = "succeeded"
+        state.error = ""
+      })
+      .addCase(savePharmacy.rejected, (state, action) => {
+        state.status = "failed"
+        state.error = "saving"
+        console.log(action.error.message)
+      })
+
   },
 })
 
-export const { getPharmacy } = PharmacySlice.actions
+export const { getPharmacy, updatePharmacy } = PharmacySlice.actions
 export const getPharmacyData = (state: RootState) => state.pharmacy.data
 export default PharmacySlice.reducer

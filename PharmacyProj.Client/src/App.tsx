@@ -1,8 +1,9 @@
 import React from "react"
 import { PharmacyView } from "./views/pharmacy/PharmacyView"
 import { Route, Routes } from "react-router-dom"
-import NavBar from "./components/navBar/NavBar"
+import NavBar from "./components/NavBar"
 import "./App.css"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
