@@ -27,10 +27,10 @@ namespace PharmacyProj.Services.Services
             return await _dbContext.Pharmacy.Where(p => parameters.Id.Equals(p.Id)).ToListAsync();
         }
 
-        public async Task<Pharmacy?> GetPharmacyByIdAsync(int id)
-        {
-            return await _dbContext.Pharmacy.FirstOrDefaultAsync(x => x.Id == id);
-        }
+        //public async Task<Pharmacy?> GetPharmacyByIdAsync(int id)
+        //{
+        //    return await _dbContext.Pharmacy.FirstOrDefaultAsync(x => x.Id == id);
+        //}
 
         public async Task<Pharmacy> CreatePharmacyAsync(Pharmacy pharmacy)
         {

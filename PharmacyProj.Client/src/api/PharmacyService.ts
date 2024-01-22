@@ -18,7 +18,7 @@ export const pharmacyService = {
   },
 
   async updatePharmacy(pharmacy: IPharmacy): Promise<IPharmacy> {
-    const savePharmacyUrl = "/Pharmacy/"
+    const savePharmacyUrl = "/Pharmacy/" + pharmacy.id.toString();
     const putParams = {
       id: pharmacy.id.toString(),
       pharmacy: pharmacy,

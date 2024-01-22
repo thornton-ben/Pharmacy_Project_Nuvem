@@ -1,7 +1,19 @@
-import React from "react";
+import * as React from "react"
+import AppBar from "@mui/material/AppBar"
+import Box from "@mui/material/Box"
+import Toolbar from "@mui/material/Toolbar"
+import Link from "@mui/material/Link"
 
 export default function NavBar() {
-    return (
-   <nav className="flex items-center justify-between flex-wrap bg-nuvemBlue p-6">NavBar</nav>
-    )
+  return (
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Link color='inherit' href="/">Pharmacy</Link>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </>
+  )
 }

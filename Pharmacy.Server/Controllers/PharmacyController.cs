@@ -59,7 +59,7 @@ namespace PharmacyProj.Server.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int pharmacyId, [FromBody]Pharmacy pharmacy)
+        public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int id, [FromBody]Pharmacy pharmacy)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace PharmacyProj.Server.Controllers
                 return BadRequest("Pharmacy is null");
             }
 
-            await _pharmacyService.UpdatePharmacyAsync(pharmacyId, pharmacy);
+            await _pharmacyService.UpdatePharmacyAsync(id, pharmacy);
 
             return NoContent();
         }
