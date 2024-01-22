@@ -29,7 +29,7 @@ export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[], getParams>(
 export const savePharmacy = createAsyncThunk<IPharmacy>(
   "pharmacy/savePharmacy",
   async (pharmacy: any) => {
-    const updatedPharmacy = await pharmacyService.savePharmacy(pharmacy)
+    const updatedPharmacy = await pharmacyService.updatePharmacy(pharmacy)
     return updatedPharmacy
   },
 )
@@ -50,12 +50,10 @@ export const PharmacySlice = createSlice({
     },
     updatePharmacy: (state, action: PayloadAction<any>) => {
       const { id, updateData } = action.payload
-      const targetPharmacy = state.data.find(
-        (pharmacy) => pharmacy.pharmacyId === id,
-      )
+      const targetPharmacy = state.data.find((pharmacy) => pharmacy.id === id)
       if (targetPharmacy) {
         state.data = state.data.map((pharmacy) => {
-          return pharmacy.pharmacyId === id ? updateData : targetPharmacy
+          return pharmacy.id === id ? updateData : targetPharmacy
         })
       }
     },
@@ -85,7 +83,6 @@ export const PharmacySlice = createSlice({
         state.error = "saving"
         console.log(action.error.message)
       })
-
   },
 })
 

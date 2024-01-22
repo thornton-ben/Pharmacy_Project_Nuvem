@@ -56,7 +56,7 @@ namespace PharmacyProj.Server.Controllers
         //    }
         //}
 
-        [HttpPut("{pharmacyId:int}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int pharmacyId, [FromBody]Pharmacy pharmacy)
@@ -73,36 +73,28 @@ namespace PharmacyProj.Server.Controllers
                 return BadRequest("Pharmacy is null");
             }
 
-
-            var dbPharmacy = _pharmacyService.GetPharmacyByIdAsync(pharmacyId);
-            if (dbPharmacy == null)
-            {
-                _logger.LogError($"Pharmacy with pharmacyId: {pharmacyId}, hasn't been found in database.");
-                return NotFound();
-            }
-
-            await _pharmacyService.UpdatePharmacyAsync(pharmacy);
+            await _pharmacyService.UpdatePharmacyAsync(pharmacyId, pharmacy);
 
             return NoContent();
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Pharmacy>> CreatePharmacy(Pharmacy pharmacy)
-        {
-            //TODO: need to check to see if pharmacy alread exists
-            try
-            {
-                Pharmacy result = await _pharmacyService.CreatePharmacyAsync(pharmacy);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpPost]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<ActionResult<Pharmacy>> CreatePharmacy(Pharmacy pharmacy)
+        //{
+        //    //TODO: need to check to see if pharmacy alread exists
+        //    try
+        //    {
+        //        Pharmacy result = await _pharmacyService.CreatePharmacyAsync(pharmacy);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex.Message);
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
     }
 }

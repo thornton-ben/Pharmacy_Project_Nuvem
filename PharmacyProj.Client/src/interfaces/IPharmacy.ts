@@ -1,5 +1,4 @@
 export default interface IPharmacy {
-  pharmacyId: number
   name: string
   filledPerscriptions: number
   address: string

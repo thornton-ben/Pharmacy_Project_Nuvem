@@ -17,11 +17,15 @@ export const pharmacyService = {
     return response.data
   },
 
-  async savePharmacy(pharmacy: IPharmacy): Promise<IPharmacy> {
+  async updatePharmacy(pharmacy: IPharmacy): Promise<IPharmacy> {
     const savePharmacyUrl = "/Pharmacy/"
-    const response: AxiosResponse<IPharmacy> = await axios.patch(
+    const putParams = {
+      id: pharmacy.id.toString(),
+      pharmacy: pharmacy,
+    }
+    const response: AxiosResponse<IPharmacy> = await axios.put(
       savePharmacyUrl,
-      pharmacy,
+      putParams,
       requestConfig,
     )
     return response.data

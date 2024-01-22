@@ -9,10 +9,7 @@ namespace PharmacyProj.Entities.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]
-        public int PharmacyId { get; set; }
-        [Required]
-        [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]
+        [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Name required")]
         public string? Name { get; set; }
         [Required]
         [RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "Address required")]

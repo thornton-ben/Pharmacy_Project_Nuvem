@@ -30,6 +30,8 @@ import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
 import { Save, Close, Edit } from "@mui/icons-material"
 import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
+import Snackbar from '@mui/material/Snackbar';
+import Alert, { AlertProps } from '@mui/material/Alert';
 
 export const PharmacyView = () => {
   const pharmacyList = useAppSelector(getPharmacyData)
@@ -38,6 +40,12 @@ export const PharmacyView = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
   )
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    'children' | 'severity'
+  > | null>(null);
+
+  const handleCloseSnackbar = () => setSnackbar(null);
   let getParameters: getParams = { page: 1, id: undefined }
 
   useEffect(() => {
@@ -81,7 +89,7 @@ export const PharmacyView = () => {
     async (savedRow: GridRowModel) => {
       //@ts-expect-error
       const returnedPharmacy: any = await dispatch(savePharmacy(savedRow))
-      // setSnackbar({ children: "Successfully saved", severity: "success" })
+      setSnackbar({ children: "Successfully saved", severity: "success" })
 
       dispatch(
         updatePharmacy({
@@ -94,9 +102,9 @@ export const PharmacyView = () => {
     [dispatch(savePharmacy)],
   )
 
-  // const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-  //   setSnackbar({ children: error.message, severity: "error" })
-  // }, [])
+  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    setSnackbar({ children: error.message, severity: "error" })
+  }, [])
 
   const columns: GridColDef[] = [
     { field: "pharmacyId", headerName: "ID", width: 70, editable: false },
@@ -177,10 +185,21 @@ export const PharmacyView = () => {
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
           slotProps={{
             toolbar: { setPharmacyRows, setRowModesModel },
           }}
         />
+        {!!snackbar && (
+          <Snackbar
+            open
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            onClose={handleCloseSnackbar}
+            autoHideDuration={6000}
+          >
+            <Alert {...snackbar} onClose={handleCloseSnackbar} />
+          </Snackbar>
+        )}
       </div>
     </>
   )

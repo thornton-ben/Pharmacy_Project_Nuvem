@@ -7,7 +7,7 @@ namespace PharmacyProj.Services.Interfaces
     {
         Task<Pharmacy?> GetPharmacyByIdAsync(int id);
         Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters, int itemsPerPage);
-        Task<Pharmacy> UpdatePharmacyAsync(Pharmacy pharmacy);
+        Task<Pharmacy> UpdatePharmacyAsync(int id, Pharmacy pharmacy);
         Task<Pharmacy> CreatePharmacyAsync(Pharmacy pharmacy);
     }
 }
