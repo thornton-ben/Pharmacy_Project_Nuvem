@@ -1,6 +1,7 @@
 export default interface IPharmacy {
+  id: number
   name: string
-  filledPerscriptions: number
+  filledPrescriptions: number
   address: string
   city: string
   stateCode: string
@@ -9,5 +10,4 @@ export default interface IPharmacy {
   updatedDate?: Date | null
   updateby?: string | null
   createdBy: string
-  id: number
 } 

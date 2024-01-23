@@ -6,6 +6,7 @@ import { getParams } from "../utilities/getParams"
 import axios from "axios"
 import { RootState } from "../app/store"
 import { StatusCode } from "../utilities/StatusCode"
+import { GridValidRowModel } from "@mui/x-data-grid"
 
 const initialState: IState = {
   data: [],
@@ -26,7 +27,7 @@ export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[], getParams>(
   },
 )
 
-export const savePharmacy = createAsyncThunk<IPharmacy>(
+export const savePharmacy = createAsyncThunk<IPharmacy, GridValidRowModel>(
   "pharmacy/savePharmacy",
   async (pharmacy: any) => {
     const updatedPharmacy = await pharmacyService.updatePharmacy(pharmacy)

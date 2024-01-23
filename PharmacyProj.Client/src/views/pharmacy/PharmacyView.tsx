@@ -21,6 +21,7 @@ import {
   GridRowModel,
   GridRowEditStopReasons,
   GridValueGetterParams,
+  GridPreProcessEditCellProps,
 } from "@mui/x-data-grid"
 import Button from "@mui/material/Button"
 import AddIcon from "@mui/icons-material/Add"
@@ -30,8 +31,9 @@ import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
 import { Save, Close, Edit } from "@mui/icons-material"
 import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
-import Snackbar from '@mui/material/Snackbar';
-import Alert, { AlertProps } from '@mui/material/Alert';
+import Snackbar from "@mui/material/Snackbar"
+import Alert, { AlertProps } from "@mui/material/Alert"
+import IPharmacy from "../../interfaces/IPharmacy"
 
 export const PharmacyView = () => {
   const pharmacyList = useAppSelector(getPharmacyData)
@@ -40,12 +42,15 @@ export const PharmacyView = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
   )
+  const validationErrorsRef = React.useRef<{
+    [key: string]: { [key: string]: boolean }
+  }>({})
   const [snackbar, setSnackbar] = React.useState<Pick<
     AlertProps,
-    'children' | 'severity'
-  > | null>(null);
+    "children" | "severity"
+  > | null>(null)
 
-  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleCloseSnackbar = () => setSnackbar(null)
   let getParameters: getParams = { page: 1, id: undefined }
 
   useEffect(() => {
@@ -78,44 +83,131 @@ export const PharmacyView = () => {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     })
-
-    const editedRow = pharmacyRows.find((row) => row.id === id)
-    //  if (editedRow!.isNew) {
-    setPharmacyRows(pharmacyRows.filter((row) => row.id !== id))
-    //  }
   }
 
-  const processRowUpdate = React.useCallback(
-    async (savedRow: GridRowModel) => {
-      //@ts-expect-error
-      const returnedPharmacy: any = await dispatch(savePharmacy(savedRow))
-      setSnackbar({ children: "Successfully saved", severity: "success" })
+  const processRowUpdate = (newRow: IPharmacy) => {
+    const returnedPharmacy = dispatch(savePharmacy(newRow))
+    setSnackbar({ children: "Successfully saved", severity: "success" })
+    setPharmacyRows(
+      pharmacyRows.map((row) => (row.id === newRow.id ? newRow : row)),
+    )
+    return newRow
+  }
 
-      dispatch(
-        updatePharmacy({
-          id: returnedPharmacy.payload.id,
-          newData: returnedPharmacy.payload,
-        }),
-      )
-      return returnedPharmacy.payload
-    },
-    [dispatch(savePharmacy)],
-  )
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel)
+  }
+
+  // const processRowUpdate = React.useCallback(
+  //   async (savedRow: GridRowModel) => {
+  //     const returnedPharmacy: any = await dispatch(savePharmacy(savedRow))
+  //     setSnackbar({ children: "Successfully saved", severity: "success" })
+
+  //     dispatch(
+  //       updatePharmacy({
+  //         id: returnedPharmacy.payload.id,
+  //         newData: returnedPharmacy.payload,
+  //       }),
+  //     )
+  //     return returnedPharmacy.payload
+  //   },
+  //   [dispatch(savePharmacy)],
+  // )
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     setSnackbar({ children: error.message, severity: "error" })
   }, [])
 
   const columns: GridColDef[] = [
-    { field: "pharmacyId", headerName: "ID", width: 70, editable: false },
-    { field: "name", headerName: "Name", width: 130, editable: true },
-    { field: "city", headerName: "City", width: 130, editable: true },
-    { field: "statecode", headerName: "State", width: 130, editable: true },
     {
-      field: "filledPersriptions",
+      field: "id",
+      headerName: "Id",
+      width: 130,
+      editable: false,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 130,
+      editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length == 0
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          name: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 130,
+      editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length == 0
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          address: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
+    },
+    {
+      field: "city",
+      headerName: "City",
+      width: 130,
+      editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length == 0
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          city: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
+    },
+    {
+      field: "state",
+      headerName: "State",
+      width: 130,
+      editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length != 2
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          state: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
+    },
+    {
+      field: "zip",
+      headerName: "Zip Code",
+      width: 130,
+      editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length != 5
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          zip: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
+    },
+    {
+      field: "filledPrescriptions",
       headerName: "Filled Perscriptions",
       width: 130,
       editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value < 0 || params.props.value == null
+        validationErrorsRef.current[params.id] = {
+          ...validationErrorsRef.current[params.id],
+          filledPerscriptions: hasError,
+        }
+        return { ...params.props, error: hasError }
+      },
     },
     {
       field: "lastUpdated",
@@ -181,11 +273,15 @@ export const PharmacyView = () => {
           rows={pharmacyRows}
           columns={columns}
           editMode="row"
-          getRowId={(row) => row.id}
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
+          onRowModesModelChange={handleRowModesModelChange}
+          pageSizeOptions={[5]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 5 } },
+          }}
           slotProps={{
             toolbar: { setPharmacyRows, setRowModesModel },
           }}
