@@ -85,8 +85,14 @@ export const PharmacyView = () => {
     })
   }
 
-  const processRowUpdate = (newRow: IPharmacy) => {
-    const returnedPharmacy = dispatch(savePharmacy(newRow))
+  const processRowUpdate = async (newRow: IPharmacy) => {
+    const returnedPharmacy = await dispatch(savePharmacy(newRow))
+    dispatch(
+      updatePharmacy({
+        id: newRow.id,
+        updateData: newRow,
+      }),
+    )
     setSnackbar({ children: "Successfully saved", severity: "success" })
     setPharmacyRows(
       pharmacyRows.map((row) => (row.id === newRow.id ? newRow : row)),
