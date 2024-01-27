@@ -23,11 +23,11 @@ namespace PharmacyProj.Server.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
         public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
         {
             try
             {
+                
                 var itemsPerPage = 5;
                 List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(@params, itemsPerPage);
                 return Ok(result);

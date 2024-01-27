@@ -4,7 +4,8 @@ import {
   getPharmacyData,
   fetchPharmacyListAsync,
   savePharmacy,
-  updatePharmacy,
+  updatePharmacySlice,
+  getPharmacyStatus,
 } from "../../slicers/pharmacySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
@@ -14,7 +15,6 @@ import {
   GridRowModes,
   DataGrid,
   GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
   GridEventListener,
   GridRowId,
@@ -34,6 +34,15 @@ import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
 import IPharmacy from "../../interfaces/IPharmacy"
+import { useSelector } from "react-redux"
+import Loading from "../../components/loading/Loading"
+import {
+  handleEditClick,
+  handleSaveClick,
+  handleCancelClick,
+  handleRowEditStop,
+  handleProcessRowUpdateError,
+} from "../../utilities/GridUtilities"
 
 export const PharmacyView = () => {
   const pharmacyList = useAppSelector(getPharmacyData)
@@ -42,16 +51,7 @@ export const PharmacyView = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
   )
-  const validationErrorsRef = React.useRef<{
-    [key: string]: { [key: string]: boolean }
-  }>({})
-  const [snackbar, setSnackbar] = React.useState<Pick<
-    AlertProps,
-    "children" | "severity"
-  > | null>(null)
-
-  const handleCloseSnackbar = () => setSnackbar(null)
-  let getParameters: getParams = { page: 1, id: undefined }
+  const stateStatus = useSelector(getPharmacyStatus)
 
   useEffect(() => {
     dispatch(fetchPharmacyListAsync(getParameters))
@@ -61,68 +61,38 @@ export const PharmacyView = () => {
     setPharmacyRows(pharmacyList)
   }, [pharmacyList])
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event,
-  ) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true
-    }
-  }
+  const validationErrorsRef = React.useRef<{
+    [key: string]: { [key: string]: boolean }
+  }>({})
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    "children" | "severity"
+  > | null>(null)
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
-  }
+  let getParameters: getParams = { page: 1, id: undefined }
 
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
-  }
-
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    })
-  }
+  const handleCloseSnackbar = () => setSnackbar(null)
 
   const processRowUpdate = async (newRow: IPharmacy) => {
-    const returnedPharmacy = await dispatch(savePharmacy(newRow))
+    const returnedPharmacy: any = await(await dispatch(savePharmacy(newRow))).meta.arg
+    setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
-      updatePharmacy({
-        id: newRow.id,
-        updateData: newRow,
+      updatePharmacySlice({
+        id: returnedPharmacy.id,
+        updateData: returnedPharmacy,
       }),
     )
-    setSnackbar({ children: "Successfully saved", severity: "success" })
-    setPharmacyRows(
-      pharmacyRows.map((row) => (row.id === newRow.id ? newRow : row)),
-    )
-    return newRow
+    // setPharmacyRows(
+    //   pharmacyRows.map((row) =>
+    //     row.id === returnedPharmacy.id ? returnedPharmacy : row,
+    //   ),
+    // )
+    return returnedPharmacy.meta.arg;
   }
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel)
   }
-
-  // const processRowUpdate = React.useCallback(
-  //   async (savedRow: GridRowModel) => {
-  //     const returnedPharmacy: any = await dispatch(savePharmacy(savedRow))
-  //     setSnackbar({ children: "Successfully saved", severity: "success" })
-
-  //     dispatch(
-  //       updatePharmacy({
-  //         id: returnedPharmacy.payload.id,
-  //         newData: returnedPharmacy.payload,
-  //       }),
-  //     )
-  //     return returnedPharmacy.payload
-  //   },
-  //   [dispatch(savePharmacy)],
-  // )
-
-  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-    setSnackbar({ children: error.message, severity: "error" })
-  }, [])
 
   const columns: GridColDef[] = [
     {
@@ -246,13 +216,29 @@ export const PharmacyView = () => {
               sx={{
                 color: "primary.main",
               }}
-              onClick={handleSaveClick(id)}
+              onClick={() =>
+                handleSaveClick(
+                  id,
+                  rowModesModel,
+                  setRowModesModel,
+                  validationErrorsRef,
+                )
+              }
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
-              onClick={handleCancelClick(id)}
+              onClick={() =>
+                handleCancelClick(
+                  id,
+                  rowModesModel,
+                  setRowModesModel,
+                  pharmacyRows,
+                  setPharmacyRows,
+                  validationErrorsRef,
+                )
+              }
               color="inherit"
             />,
           ]
@@ -263,7 +249,9 @@ export const PharmacyView = () => {
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
-            onClick={handleEditClick(id)}
+            onClick={() =>
+              handleEditClick(id, rowModesModel, setRowModesModel, GridRowModes)
+            }
             color="inherit"
           />,
         ]
@@ -275,6 +263,7 @@ export const PharmacyView = () => {
     <>
       <div>Pharmacy View</div>
       <div className="container-xxl">
+        {stateStatus === "loading" && <Loading></Loading>}
         <DataGrid
           rows={pharmacyRows}
           columns={columns}
@@ -282,8 +271,10 @@ export const PharmacyView = () => {
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
           onRowModesModelChange={handleRowModesModelChange}
+          onProcessRowUpdateError={(error) =>
+            handleProcessRowUpdateError(setSnackbar, error)
+          }
           pageSizeOptions={[5]}
           initialState={{
             pagination: { paginationModel: { pageSize: 5 } },
