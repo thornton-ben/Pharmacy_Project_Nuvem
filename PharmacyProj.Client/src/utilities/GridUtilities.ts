@@ -24,7 +24,6 @@ export const handleEditClick = (
   id: GridRowId,
   rowModesModel: GridRowModesModel,
   setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
-  GridRowModes: any,
 ) => {
   setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
 }
@@ -41,20 +40,20 @@ export const handleSaveClick = (
 
   if (rowValidationErrors === undefined) {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
-    return;
+    return
   }
 
   if (rowValidationErrors !== undefined) {
     const errors = Object.values(rowValidationErrors).filter(
       (hasError) => hasError === true,
-    );
+    )
     if (errors.length === 0) {
       setRowModesModel({
         ...rowModesModel,
         [id]: { mode: GridRowModes.View },
-      });
-      validationErrorsRef.current[id] = undefined;
-      return;
+      })
+      validationErrorsRef.current[id] = undefined
+      return
     }
   }
 
@@ -65,12 +64,12 @@ export const handleCancelClick = (
   id: GridRowId,
   rowModesModel: GridRowModesModel,
   setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
-  rows: any[],
+rows: any[],
   setRows: Dispatch<SetStateAction<any>>,
   validationErrorsRef: React.MutableRefObject<{
     [key: string]: { [key: string]: boolean } | undefined
   }>,
-  setgirdActionsDisabled?: Dispatch<SetStateAction<boolean>>,
+setgirdActionsDisabled?: Dispatch<SetStateAction<boolean>>,
 ) => {
   setRowModesModel({
     ...rowModesModel,
@@ -88,4 +87,11 @@ export const handleProcessRowUpdateError = (
   return () => {
     setSnackbar({ children: error.message, severity: "error" })
   }
+}
+
+export const handleRowModesModelChange = (
+  newRowModesModel: GridRowModesModel,
+  setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
+) => {
+  setRowModesModel(newRowModesModel)
 }

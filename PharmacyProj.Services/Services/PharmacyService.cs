@@ -58,7 +58,7 @@ namespace PharmacyProj.Services.Services
             }
             await _dbContext.SaveChangesAsync();
 
-            return pharmacy;
+            return existingPharmacy ?? pharmacy;
         }
     }
 }

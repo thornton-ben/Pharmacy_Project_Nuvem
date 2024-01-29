@@ -44,16 +44,16 @@ namespace PharmacyProj.Server.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int id, [FromBody]Pharmacy pharmacy)
         {
-           
-            if (pharmacy == null)
+            try
             {
-                _logger.LogError("Pharmacy sent from client is null.");
-                return BadRequest("Pharmacy is null");
+                var updateResult = await _pharmacyService.UpdatePharmacyAsync(id, pharmacy);
+                return Ok(updateResult);
             }
-
-            await _pharmacyService.UpdatePharmacyAsync(id, pharmacy);
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
     }

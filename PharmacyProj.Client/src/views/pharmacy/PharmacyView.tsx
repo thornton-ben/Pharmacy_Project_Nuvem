@@ -42,6 +42,7 @@ import {
   handleCancelClick,
   handleRowEditStop,
   handleProcessRowUpdateError,
+  handleRowModesModelChange
 } from "../../utilities/GridUtilities"
 
 export const PharmacyView = () => {
@@ -74,7 +75,8 @@ export const PharmacyView = () => {
   const handleCloseSnackbar = () => setSnackbar(null)
 
   const processRowUpdate = async (newRow: IPharmacy) => {
-    const returnedPharmacy: any = await(await dispatch(savePharmacy(newRow))).meta.arg
+    const response: any = await dispatch(savePharmacy(newRow));
+    const returnedPharmacy: any = response.meta.arg;
     setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
       updatePharmacySlice({
@@ -82,17 +84,13 @@ export const PharmacyView = () => {
         updateData: returnedPharmacy,
       }),
     )
-    // setPharmacyRows(
-    //   pharmacyRows.map((row) =>
-    //     row.id === returnedPharmacy.id ? returnedPharmacy : row,
-    //   ),
-    // )
     return returnedPharmacy.meta.arg;
   }
+  
 
-  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel)
-  }
+  // const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+  //   setRowModesModel(newRowModesModel)
+  // }
 
   const columns: GridColDef[] = [
     {
@@ -249,9 +247,7 @@ export const PharmacyView = () => {
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
-            onClick={() =>
-              handleEditClick(id, rowModesModel, setRowModesModel, GridRowModes)
-            }
+            onClick={() => handleEditClick(id, rowModesModel, setRowModesModel)}
             color="inherit"
           />,
         ]
@@ -271,7 +267,7 @@ export const PharmacyView = () => {
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
-          onRowModesModelChange={handleRowModesModelChange}
+          // onRowModesModelChange={(rowModesModel) => handleRowModesModelChange(rowModesModel, setRowModesModel)}
           onProcessRowUpdateError={(error) =>
             handleProcessRowUpdateError(setSnackbar, error)
           }
