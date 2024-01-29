@@ -84,7 +84,7 @@ export const PharmacyView = () => {
         updateData: returnedPharmacy,
       }),
     )
-    return returnedPharmacy.meta.arg;
+    return returnedPharmacy;
   }
   
 
