@@ -76,7 +76,7 @@ export const PharmacyView = () => {
 
   const processRowUpdate = async (newRow: IPharmacy) => {
     const response: any = await dispatch(savePharmacy(newRow));
-    const returnedPharmacy: any = response.meta.arg;
+    const returnedPharmacy: any = response.payload;
     setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
       updatePharmacySlice({
