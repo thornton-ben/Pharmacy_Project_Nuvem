@@ -1,11 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { pharmacyService } from "../api/PharmacyService"
+import {
+  savePharmacyAsync,
+  fetchPharmacyListAsync,
+} from "../api/PharmacyService"
 import IPharmacy from "../interfaces/IPharmacy"
 import IState from "../interfaces/IState"
 import { getParams } from "../utilities/getParams"
-import axios from "axios"
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { RootState } from "../app/store"
 import { GridValidRowModel } from "@mui/x-data-grid"
+import { act } from "react-dom/test-utils"
+const requestConfig: AxiosRequestConfig = {
+  baseURL: import.meta.env.VITE_BASE_URL,
+}
 
 const initialState: IState = {
   data: [],
@@ -14,25 +21,8 @@ const initialState: IState = {
   error: "",
 }
 
-export const fetchPharmacyListAsync = createAsyncThunk<IPharmacy[], getParams>(
-  "pharmacy/fetchList",
-  async (parameters: getParams, { signal }) => {
-    const cancelSource = axios.CancelToken.source()
-    signal.addEventListener("abort", () => {
-      cancelSource.cancel()
-    })
-    const list = await pharmacyService.getPharmacyList(parameters)
-    return [...list]
-  },
-)
-
-export const savePharmacy = createAsyncThunk<IPharmacy, GridValidRowModel>(
-  "pharmacy/savePharmacy",
-  async (pharmacy: any) => {
-    const updatedPharmacy = await pharmacyService.updatePharmacy(pharmacy)
-    return updatedPharmacy
-  },
-)
+export const fetchPharmacy = (getParams: getParams | undefined) => fetchPharmacyListAsync(getParams)
+export const putPharmacy = (pharmacy: IPharmacy | undefined) => savePharmacyAsync(pharmacy)
 
 export const PharmacySlice = createSlice({
   name: "pharmacy",
@@ -67,27 +57,27 @@ export const PharmacySlice = createSlice({
         state.status = "idle"
         state.data = action.payload
       })
-      .addCase(fetchPharmacyListAsync.rejected, (state) => {
+      .addCase(fetchPharmacyListAsync.rejected, (state, action) => {
         state.status = "failed"
+        state.error = action.error.message
       })
-      .addCase(savePharmacy.pending, (state) => {
+      .addCase(savePharmacyAsync.pending, (state) => {
         state.status = "saving"
         state.error = ""
       })
-      .addCase(savePharmacy.fulfilled, (state) => {
+      .addCase(savePharmacyAsync.fulfilled, (state) => {
         state.status = "succeeded"
         state.error = ""
       })
-      .addCase(savePharmacy.rejected, (state, action) => {
+      .addCase(savePharmacyAsync.rejected, (state, action) => {
         state.status = "failed"
-        state.error = "saving"
+        state.error = action.error.message
         console.log(action.error.message)
       })
   },
 })
 
-export const { getPharmacy, updatePharmacySlice } =
-  PharmacySlice.actions
+export const { getPharmacy, updatePharmacySlice } = PharmacySlice.actions
 export const getPharmacyData = (state: RootState) => state.pharmacy.data
 export const getPharmacyStatus = (state: RootState) => state.pharmacy.status
 export default PharmacySlice.reducer

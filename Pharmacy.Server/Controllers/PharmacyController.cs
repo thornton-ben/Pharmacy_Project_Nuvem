@@ -20,16 +20,14 @@ namespace PharmacyProj.Server.Controllers
             _pharmacyService = pharmacyService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> GetPharmacyList([FromQuery] QueryParameters @params)
+        public async Task<ActionResult<Pharmacy>> GetPharmacyList(QueryParameters getParams)
         {
             try
             {
-                
-                var itemsPerPage = 5;
-                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(@params, itemsPerPage);
+                List<Pharmacy> result = await _pharmacyService.GetPharmacyListAsync(getParams);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -39,14 +37,14 @@ namespace PharmacyProj.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pharmacy>> UpdatePharmacyById(int id, [FromBody]Pharmacy pharmacy)
+        public async Task<ActionResult<Pharmacy>> UpdatePharmacyById([FromBody]Pharmacy pharmacy)
         {
             try
             {
-                var updateResult = await _pharmacyService.UpdatePharmacyAsync(id, pharmacy);
+                var updateResult = await _pharmacyService.UpdatePharmacyAsync(pharmacy);
                 return Ok(updateResult);
             }
             catch (Exception ex)

@@ -15,13 +15,13 @@ namespace PharmacyProj.Services.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters, int itemsPerPage)
+        public async Task<List<Pharmacy>> GetPharmacyListAsync(QueryParameters parameters)
         {
             if (parameters.Id == null)
             {
                 return await _dbContext.Pharmacy.OrderBy(p => p.Id)
-                    .Skip((parameters.Page - 1) * itemsPerPage)
-                    .Take(itemsPerPage)
+                    .Skip((parameters.Page - 1) * parameters.PageSize)
+                    .Take(parameters.PageSize)
                     .ToListAsync();
             }
             return await _dbContext.Pharmacy.Where(p => parameters.Id.Equals(p.Id)).ToListAsync();
@@ -36,14 +36,15 @@ namespace PharmacyProj.Services.Services
             return pharmacy;
         }
 
-        public async Task<Pharmacy> UpdatePharmacyAsync(int id, Pharmacy pharmacy)
+        public async Task<Pharmacy> UpdatePharmacyAsync(Pharmacy pharmacy)
         {
             var queryParams = new QueryParameters
             {
+                PageSize = 1,
                 Page = 1,
-                Id = id
+                Id = pharmacy.Id
             };
-            var existingPharmacyList = await GetPharmacyListAsync(queryParams, 1);
+            var existingPharmacyList = await GetPharmacyListAsync(queryParams);
             var existingPharmacy = existingPharmacyList[0];
 
             if (existingPharmacy != null)

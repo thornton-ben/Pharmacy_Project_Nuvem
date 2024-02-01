@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react"
 import "./PharmacyView.css"
 import {
   getPharmacyData,
-  fetchPharmacyListAsync,
-  savePharmacy,
+  fetchPharmacy,
+  putPharmacy,
   updatePharmacySlice,
   getPharmacyStatus,
+  PharmacySlice,
 } from "../../slicers/pharmacySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
@@ -16,10 +17,6 @@ import {
   DataGrid,
   GridColDef,
   GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowEditStopReasons,
   GridValueGetterParams,
   GridPreProcessEditCellProps,
 } from "@mui/x-data-grid"
@@ -55,7 +52,7 @@ export const PharmacyView = () => {
   const stateStatus = useSelector(getPharmacyStatus)
 
   useEffect(() => {
-    dispatch(fetchPharmacyListAsync(getParameters))
+    dispatch(fetchPharmacy(undefined))
   }, [])
 
   useEffect(() => {
@@ -70,12 +67,10 @@ export const PharmacyView = () => {
     "children" | "severity"
   > | null>(null)
 
-  let getParameters: getParams = { page: 1, id: undefined }
-
   const handleCloseSnackbar = () => setSnackbar(null)
 
   const processRowUpdate = async (newRow: IPharmacy) => {
-    const response: any = await dispatch(savePharmacy(newRow));
+    const response: any = await dispatch(putPharmacy(newRow))
     const returnedPharmacy: any = response.payload;
     setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
@@ -87,11 +82,6 @@ export const PharmacyView = () => {
     return returnedPharmacy;
   }
   
-
-  // const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-  //   setRowModesModel(newRowModesModel)
-  // }
-
   const columns: GridColDef[] = [
     {
       field: "id",
