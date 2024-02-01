@@ -3,7 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pharmacy.Server", "Pharmacy.Server\Pharmacy.Server.csproj", "{408FEC2C-2282-4C70-A9F2-929FA7CB3089}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyProj.Server", "Pharmacy.Server\PharmacyProj.Server.csproj", "{408FEC2C-2282-4C70-A9F2-929FA7CB3089}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyProj.Services", "PharmacyProj.Services\PharmacyProj.Services.csproj", "{C2B8148A-62C1-4725-A1AA-55EC2B1A32E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyProj.Entities", "PharmacyProj.Entities\PharmacyProj.Entities.csproj", "{45507B26-3013-48E4-87A6-0335DB40B42E}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "PharmacyProj.Client", "PharmacyProj.Client\", "{DB980763-37F9-481A-83FA-9BAC47363219}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_49886"
+		Debug.AspNetCompiler.PhysicalPath = "PharmacyProj.Client\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49886\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_49886"
+		Release.AspNetCompiler.PhysicalPath = "PharmacyProj.Client\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49886\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "49886"
+		SlnRelativePath = "PharmacyProj.Client\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +40,18 @@ Global
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{408FEC2C-2282-4C70-A9F2-929FA7CB3089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B8148A-62C1-4725-A1AA-55EC2B1A32E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B8148A-62C1-4725-A1AA-55EC2B1A32E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B8148A-62C1-4725-A1AA-55EC2B1A32E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B8148A-62C1-4725-A1AA-55EC2B1A32E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45507B26-3013-48E4-87A6-0335DB40B42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45507B26-3013-48E4-87A6-0335DB40B42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45507B26-3013-48E4-87A6-0335DB40B42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45507B26-3013-48E4-87A6-0335DB40B42E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB980763-37F9-481A-83FA-9BAC47363219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB980763-37F9-481A-83FA-9BAC47363219}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB980763-37F9-481A-83FA-9BAC47363219}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB980763-37F9-481A-83FA-9BAC47363219}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

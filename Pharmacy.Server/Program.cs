@@ -1,13 +1,30 @@
+using Microsoft.EntityFrameworkCore;
+using PharmacyProj.Services;
+using PharmacyProj.Services.Interfaces;
+using PharmacyProj.Services.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContextPool<PharmacyDbContext>(options =>
+            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("PharmacyProj.Entities"))
+    );
+
+builder.Services.AddScoped<IPharmacyService, PharmacyService>();
+
+
 var app = builder.Build();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -21,5 +38,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<PharmacyDbContext>().Database.Migrate();
 
 app.Run();
