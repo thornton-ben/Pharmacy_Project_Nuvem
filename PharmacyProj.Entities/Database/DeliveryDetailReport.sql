@@ -1,7 +1,7 @@
-﻿USE [PharmacyProj]
+﻿USE [PharmacyDb]
 GO
 
-CREATE PROCEDURE [dbo].[sp_DeliveryDetailReport]
+CREATE PROCEDURE [dbo].[DeliveryDetailReport]
 AS
 BEGIN
     SELECT

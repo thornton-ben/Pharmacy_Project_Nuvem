@@ -1,7 +1,7 @@
-﻿USE [PharmacyProj]
+﻿USE [PharmacyDb]
 GO
 
-CREATE PROCEDURE [dbo].[sp_GetWarehouseProfitList] 
+CREATE PROCEDURE [dbo].[GetWarehouseProfitList] 
 AS
 BEGIN
     SELECT
