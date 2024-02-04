@@ -18,6 +18,10 @@ builder.Services.AddDbContextPool<PharmacyDbContext>(options =>
     );
 
 builder.Services.AddScoped<IPharmacyService, PharmacyService>();
+builder.Services.AddScoped<IDeliveryService, DeliveryService>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+builder.Services.AddScoped<IPharmacySaleService, PharmacySaleService>();
+builder.Services.AddScoped<IPharmacistService, PharmacistService>();
 
 
 var app = builder.Build();

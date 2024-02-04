@@ -19,12 +19,12 @@ namespace PharmacyProj.Services.Services
         {
             if (parameters.Id == null)
             {
-                return await _dbContext.Pharmacy.OrderBy(p => p.Id)
+                return await _dbContext.Pharmacy.OrderBy(p => p.PharmacyId)
                     .Skip((parameters.Page - 1) * parameters.PageSize)
                     .Take(parameters.PageSize)
                     .ToListAsync();
             }
-            return await _dbContext.Pharmacy.Where(p => parameters.Id.Equals(p.Id)).ToListAsync();
+            return await _dbContext.Pharmacy.Where(p => parameters.Id.Equals(p.PharmacyId)).ToListAsync();
         }
 
         public async Task<Pharmacy> CreatePharmacyAsync(Pharmacy pharmacy)
@@ -42,22 +42,23 @@ namespace PharmacyProj.Services.Services
             {
                 PageSize = 1,
                 Page = 1,
-                Id = pharmacy.Id
+                Id = pharmacy.PharmacyId
             };
             var existingPharmacyList = await GetPharmacyListAsync(queryParams);
             var existingPharmacy = existingPharmacyList[0];
 
             if (existingPharmacy != null)
             {
-                existingPharmacy.Name = !string.IsNullOrWhiteSpace(pharmacy.Name) ? pharmacy.Name : pharmacy.Name;
-                existingPharmacy.Address = !string.IsNullOrWhiteSpace(pharmacy.Address) ? pharmacy.Address : pharmacy.Address;
-                existingPharmacy.City = !string.IsNullOrWhiteSpace(pharmacy.City) ? pharmacy.City : pharmacy.City;
-                existingPharmacy.State = !string.IsNullOrWhiteSpace(pharmacy.State) ? pharmacy.State : pharmacy.State;
-                existingPharmacy.Zip = !string.IsNullOrWhiteSpace(pharmacy.Zip) ? pharmacy.Zip : pharmacy.Zip;
-                existingPharmacy.FilledPrescriptions = pharmacy.FilledPrescriptions is not null ? pharmacy.FilledPrescriptions : pharmacy.FilledPrescriptions;
+                existingPharmacy.Name = !string.IsNullOrWhiteSpace(pharmacy.Name) ? pharmacy.Name : existingPharmacy.Name;
+                existingPharmacy.Address = !string.IsNullOrWhiteSpace(pharmacy.Address) ? pharmacy.Address : existingPharmacy.Address;
+                existingPharmacy.City = !string.IsNullOrWhiteSpace(pharmacy.City) ? pharmacy.City : existingPharmacy.City;
+                existingPharmacy.State = !string.IsNullOrWhiteSpace(pharmacy.State) ? pharmacy.State : existingPharmacy.State;
+                existingPharmacy.Zip = !string.IsNullOrWhiteSpace(pharmacy.Zip) ? pharmacy.Zip : existingPharmacy.Zip;
+                existingPharmacy.FilledPrescriptions = pharmacy.FilledPrescriptions is not null ? pharmacy.FilledPrescriptions : existingPharmacy.FilledPrescriptions;
                 existingPharmacy.UpdatedDate = DateTime.UtcNow;
             }
             await _dbContext.SaveChangesAsync();
+            //need to have logic if pharmacy doesn't exist to create a new one
 
             return existingPharmacy ?? pharmacy;
         }

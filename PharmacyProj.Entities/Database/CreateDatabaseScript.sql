@@ -41,7 +41,7 @@ CREATE TABLE Pharmacist (
     StartDate DATETIMEOFFSET NOT NULL,
     EndDate DATETIMEOFFSET NULL,
     CreatedDate DATETIMEOFFSET NOT NULL,
-    UpdateDate DATETIMEOFFSET NULL,
+    UpdatedDate DATETIMEOFFSET NULL,
     CreatedBy VARCHAR(250) NOT NULL,
     UpdatedBy VARCHAR(250) NULL 
 );
@@ -69,7 +69,7 @@ CREATE TABLE Warehouse (
     Name VARCHAR(250) NOT NULL,
     Address VARCHAR(250) NOT NULL,
     City VARCHAR(250) NOT NULL,
-    StateCode VARCHAR(2) NOT NULL,
+    State VARCHAR(2) NOT NULL,
     Zip VARCHAR(5) NOT NULL,
 	CreatedDate DATETIMEOFFSET NOT NULL, 
 	CreatedBy VARCHAR(250) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE Warehouse (
 	UpdatedBy VARCHAR(250) NULL
 );
 
-INSERT INTO Warehouse (Name, Address, City, StateCode, Zip, CreatedDate, CreatedBy)
+INSERT INTO Warehouse (Name, Address, City, State, Zip, CreatedDate, CreatedBy)
 VALUES
     ('Doctor Supplies', '123 Main St', 'TechCity', 'TC', '12345', '2024-02-01', 'ben@test.com'),
     ('Pharmacy Central', '456 Innovation Ave', 'TechVille', 'TV', '54321', '2024-02-01', 'ben@test.com'),
@@ -148,11 +148,11 @@ VALUES
 
 END
 
-IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PharmacySales')
+IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PharmacySale')
 BEGIN
 
-CREATE TABLE PharmacySales (
-    SaleId INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE PharmacySale (
+    PharmacySaleId INT PRIMARY KEY IDENTITY(1,1),
     PharmacistId INT FOREIGN KEY REFERENCES Pharmacist(PharmacistId),
     PharmacyId INT FOREIGN KEY REFERENCES Pharmacy(PharmacyId),
     DrugId INT FOREIGN KEY REFERENCES Drug(DrugId),
@@ -164,7 +164,7 @@ CREATE TABLE PharmacySales (
 	UpdatedBy VARCHAR(250) NULL
   );
 
-INSERT INTO PharmacySales (PharmacistId, PharmacyId, DrugId, SalePrice, UnitsSold, CreatedDate, CreatedBy)
+INSERT INTO PharmacySale (PharmacistId, PharmacyId, DrugId, SalePrice, UnitsSold, CreatedDate, CreatedBy)
 VALUES
    (2, 3, 2, 15.99, 25, '2024-02-03', 'ben@test.com'),
 (7, 2, 1, 10.50, 10, '2024-02-03', 'ben@test.com'),
