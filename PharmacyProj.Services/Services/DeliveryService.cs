@@ -31,7 +31,7 @@ namespace PharmacyProj.Services.Services
                     .Take(parameters.PageSize)
                     .ToListAsync();
             }
-            return await _dbContext.Delivery.Where(p => parameters.Id.Equals(p.DeliveryId)).ToListAsync();
+            return await _dbContext.Delivery.Where(p => parameters.Id.Equals(p.PharmacyId)).ToListAsync();
         }
 
  
