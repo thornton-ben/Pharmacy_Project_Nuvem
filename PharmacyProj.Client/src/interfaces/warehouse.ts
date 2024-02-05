@@ -1,7 +1,6 @@
-export default interface IPharmacy {
-  id: number
+export default interface IDrug {
+  warehouseId: number
   name: string
-  filledPrescriptions: number
   address: string
   city: string
   state: string
