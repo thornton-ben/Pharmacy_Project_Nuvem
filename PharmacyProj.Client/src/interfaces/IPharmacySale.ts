@@ -3,6 +3,7 @@ export default interface IPharmacySale {
   pharmacistId: number
   drugId: number
   salePrice: number
+  unitsSold: number
   createdDate: Date
   updatedDate?: Date | null
   updateby?: string | null

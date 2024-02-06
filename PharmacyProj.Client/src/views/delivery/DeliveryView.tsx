@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react"
-import "./PharmacyView.css"
+import "./DeliveryView.css"
 import {
-  getPharmacyData,
-  fetchPharmacy,
-  putPharmacy,
-  updatePharmacySlice,
-  getPharmacyStatus,
-  PharmacySlice,
-} from "../../slicers/pharmacySlice"
+  getDeliveryData,
+  fetchDelivery,
+  putDelivery,
+  updateDeliverySlice,
+  getDeliveryStatus,
+  DeliverySlice,
+} from "../../slicers/deliverySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
 import {
@@ -30,7 +30,7 @@ import { Save, Close, Edit } from "@mui/icons-material"
 import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
-import IPharmacy from "../../interfaces/IPharmacy"
+import IDelivery from "../../interfaces/IDelivery"
 import { useSelector } from "react-redux"
 import Loading from "../../components/loading/Loading"
 import {
@@ -39,25 +39,24 @@ import {
   handleCancelClick,
   handleRowEditStop,
   handleProcessRowUpdateError,
-  handleRowModesModelChange
 } from "../../utilities/GridUtilities"
 
-export const PharmacyView = () => {
-  const pharmacyList = useAppSelector(getPharmacyData)
+export const DeliveryView = () => {
+  const deliveryList = useAppSelector(getDeliveryData)
   const dispatch = useAppDispatch()
-  const [pharmacyRows, setPharmacyRows] = useState(pharmacyList)
+  const [deliveryRows, setDeliveryRows] = useState(deliveryList)
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
   )
-  const stateStatus = useSelector(getPharmacyStatus)
+  const stateStatus = useSelector(getDeliveryStatus)
 
   useEffect(() => {
-    dispatch(fetchPharmacy(undefined))
+    dispatch(fetchDelivery(undefined))
   }, [])
 
   useEffect(() => {
-    setPharmacyRows(pharmacyList)
-  }, [pharmacyList])
+    setDeliveryRows(deliveryList)
+  }, [deliveryList])
 
   const validationErrorsRef = React.useRef<{
     [key: string]: { [key: string]: boolean }
@@ -69,29 +68,29 @@ export const PharmacyView = () => {
 
   const handleCloseSnackbar = () => setSnackbar(null)
 
-  const processRowUpdate = async (newRow: IPharmacy) => {
-    const response: any = await dispatch(putPharmacy(newRow))
-    const returnedPharmacy: any = response.payload;
+  const processRowUpdate = async (newRow: IDelivery) => {
+    const response: any = await dispatch(putDelivery(newRow))
+    const returnedDelivery: any = response.payload
     setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
-      updatePharmacySlice({
-        id: returnedPharmacy.id,
-        updateData: returnedPharmacy,
+      updateDeliverySlice({
+        id: returnedDelivery.id,
+        updateData: returnedDelivery,
       }),
     )
-    return returnedPharmacy;
+    return returnedDelivery
   }
-  
+
   const columns: GridColDef[] = [
     {
-      field: "id",
+      field: "DeliveryId",
       headerName: "Id",
       width: 130,
       editable: false,
     },
     {
-      field: "name",
-      headerName: "Name",
+      field: "warehouseId",
+      headerName: "warehouseId",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -104,8 +103,8 @@ export const PharmacyView = () => {
       },
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "pharmacyId",
+      headerName: "PharmacyId",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -118,8 +117,8 @@ export const PharmacyView = () => {
       },
     },
     {
-      field: "city",
-      headerName: "City",
+      field: "drugId",
+      headerName: "drugId",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -132,8 +131,8 @@ export const PharmacyView = () => {
       },
     },
     {
-      field: "state",
-      headerName: "State",
+      field: "unitCount",
+      headerName: "UnitCount",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -146,8 +145,8 @@ export const PharmacyView = () => {
       },
     },
     {
-      field: "zip",
-      headerName: "Zip Code",
+      field: "unitPrice",
+      headerName: "UnitPrice",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -160,8 +159,8 @@ export const PharmacyView = () => {
       },
     },
     {
-      field: "filledPrescriptions",
-      headerName: "Filled Perscriptions",
+      field: "totalPrice",
+      headerName: "TotalPrice",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -222,8 +221,8 @@ export const PharmacyView = () => {
                   id,
                   rowModesModel,
                   setRowModesModel,
-                  pharmacyRows,
-                  setPharmacyRows,
+                  deliveryRows,
+                  setDeliveryRows,
                   validationErrorsRef,
                 )
               }
@@ -247,18 +246,17 @@ export const PharmacyView = () => {
 
   return (
     <>
-      <div>Pharmacy View</div>
+      <div>Delivery View</div>
       <div className="container-xxl">
         {stateStatus === "loading" && <Loading></Loading>}
         <DataGrid
-          rows={pharmacyRows}
-          getRowId={p => p.pharmacyId}
+          rows={deliveryRows}
+          getRowId={(p) => p.deliveryId}
           columns={columns}
           editMode="row"
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
-          // onRowModesModelChange={(rowModesModel) => handleRowModesModelChange(rowModesModel, setRowModesModel)}
           onProcessRowUpdateError={(error) =>
             handleProcessRowUpdateError(setSnackbar, error)
           }
@@ -267,7 +265,7 @@ export const PharmacyView = () => {
             pagination: { paginationModel: { pageSize: 5 } },
           }}
           slotProps={{
-            toolbar: { setPharmacyRows, setRowModesModel },
+            toolbar: { setDeliveryRows, setRowModesModel },
           }}
         />
         {!!snackbar && (
@@ -285,4 +283,4 @@ export const PharmacyView = () => {
   )
 }
 
-export default PharmacyView
+export default DeliveryView

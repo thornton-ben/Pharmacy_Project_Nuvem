@@ -4,7 +4,6 @@ import {
   fetchPharmacyListAsync,
 } from "../api/PharmacyService"
 import IPharmacy from "../interfaces/IPharmacy"
-import IState from "../interfaces/IState"
 import { getParams } from "../utilities/getParams"
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { RootState } from "../app/store"
@@ -14,9 +13,14 @@ const requestConfig: AxiosRequestConfig = {
   baseURL: import.meta.env.VITE_BASE_URL,
 }
 
-const initialState: IState = {
+interface IPharmacyState {
+  data: IPharmacy[]
+  status: "idle" | "loading" | "failed" | "succeeded" | "saving"
+  error: any
+}
+
+const initialState: IPharmacyState = {
   data: [],
-  selectedPharmacy: null,
   status: "idle",
   error: "",
 }
@@ -29,21 +33,21 @@ export const PharmacySlice = createSlice({
   initialState,
   reducers: {
     getPharmacy: (state, action: PayloadAction<number> | null) => {
-      if (action?.payload != null) {
-        const selectPharmacy = state.data.find(
-          (pharmacy) => pharmacy.id === action.payload,
-        )
-        state.selectedPharmacy = selectPharmacy
-      } else {
-        state.selectedPharmacy = null
-      }
+      // if (action?.payload != null) {
+      //   const selectPharmacy = state.data.find(
+      //     (pharmacy) => pharmacy.id === action.payload,
+      //   )
+      //   state.selectedPharmacy = selectPharmacy
+      // } else {
+      //   state.selectedPharmacy = null
+      // }
     },
     updatePharmacySlice: (state, action: PayloadAction<any>) => {
       const { id, updateData } = action.payload
-      const targetPharmacy = state.data.find((pharmacy) => pharmacy.id === id)
+      const targetPharmacy = state.data.find((pharmacy) => pharmacy.pharmacyId === id)
       if (targetPharmacy) {
         state.data = state.data.map((pharmacy) => {
-          return pharmacy.id === id ? updateData : pharmacy
+          return pharmacy.pharmacyId === id ? updateData : pharmacy
         })
       }
     },

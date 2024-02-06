@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import PharmacySlice from "../slicers/pharmacySlice"
+import DeliverySlice from "../slicers/deliverySlice"
 
 export const store = configureStore({
   reducer: {
     pharmacy: PharmacySlice,
+    delivery: DeliverySlice,
   },
 })
 
