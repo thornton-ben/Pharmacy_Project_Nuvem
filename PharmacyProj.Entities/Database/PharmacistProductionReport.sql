@@ -4,27 +4,45 @@ GO
 CREATE PROCEDURE [dbo].[PharmacistProductionReport]
 AS
 BEGIN
+WITH PharmacistDrugSales AS (
     SELECT
-        P.PharmacistId ,
-        P.FirstName,
-        P.LastName,
-        Ph.Name AS PharmacyName,
-        D.DrugName,
-        SUM(S.UnitsSold) AS TotalUnitCount,
-        RANK() OVER (ORDER BY SUM(S.UnitsSold * S.SalePrice) DESC) AS Rank
+        PS.PharmacistId,
+        PS.DrugId,
+        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacist
     FROM
-       Pharmacist P
-        JOIN Pharmacy Ph ON P.PharmacyId = Ph.PharmacyId
-        JOIN PharmacySales S ON P.PharmacistId = S.PharmacistId
-        JOIN Drug D ON S.DrugId = D.DrugId
+        PharmacySale PS
     GROUP BY
-        P.PharmacistId,
-		P.FirstName,
-		P.LastName,
-        Ph.Name,
-        D.DrugName
-    ORDER BY
-        Rank;
+        PS.PharmacistId,
+        PS.DrugId
+)
+SELECT
+    PH.PharmacistId,
+    PH.FirstName, 
+	PH.LastName,
+ P.PharmacyId,
+    P.Name AS PharmacyName,
+    PD.DrugId,
+    D.DrugName,
+    PD.TotalUnitsSoldByPharmacist,
+    PD2.TotalUnitsSoldByPharmacy
+FROM
+    Pharmacist PH
+INNER JOIN
+    Pharmacy P ON PH.PharmacyId = P.PharmacyId
+INNER JOIN
+    PharmacistDrugSales PD ON PH.PharmacistId = PD.PharmacistId
+INNER JOIN
+    Drug D ON PD.DrugId = D.DrugId
+INNER JOIN (
+    SELECT
+        PS.DrugId,
+        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacy
+    FROM
+        PharmacySale PS
+    GROUP BY
+        PS.DrugId
+) PD2 ON PD.DrugId = PD2.DrugId
+ORDER BY PharmacistId, TotalUnitsSoldByPharmacist DESC
 END
 GO
 

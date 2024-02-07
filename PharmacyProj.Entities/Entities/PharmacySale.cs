@@ -21,7 +21,7 @@ namespace PharmacyProj.Entities.Entities
         public string? CreatedBy { get; set; }
 
         public string? UpdatedBy { get; set; }
-        public required Pharmacy Pharmacy { get; set; }
+        public required Pharmacist Pharmacy { get; set; }
         public required Drug Drug { get; set; }
     }
 }
