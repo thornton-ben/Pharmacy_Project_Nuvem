@@ -28,7 +28,7 @@ namespace PharmacyProj.Server.Controllers
         {
             try
             {
-                List<DeliveryDTO> result = await _deliveryService.GetDeliveryListAsync(getParams);
+                PagedList<DeliveryDTO> result = await _deliveryService.GetDeliveryListAsync(getParams);
                 return Ok(result);
             }
             catch (Exception ex)

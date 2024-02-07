@@ -3,6 +3,7 @@ using PharmacyProj.Entities.Entities;
 using PharmacyProj.Services.DTO;
 using PharmacyProj.Services.Helpers;
 using PharmacyProj.Services.Interfaces;
+using System.Linq.Expressions;
 
 namespace PharmacyProj.Services.Services
 {
@@ -35,15 +36,27 @@ namespace PharmacyProj.Services.Services
             return await _dbContext.Delivery.Where(p => parameters.Id.Equals(p.PharmacyId)).ToListAsync();
         }
 
-        public async Task<List<DeliveryDTO>> GetDeliveryListAsync(QueryParameters parameters)
+        public async Task<PagedList<DeliveryDTO>> GetDeliveryListAsync(QueryParameters parameters)
         {
-            //TODO: insert new parameters to get deliveries for a pharmacy or warehouse
-            //insert logic to page
-            if (parameters.Id == null)
+            IQueryable<Delivery> deliveryQuery = _dbContext.Delivery;
+
+            if (parameters.Id != null)
             {
-                return await _dbContext.Delivery.Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).OrderBy(p => p.DeliveryId)
-                    .Skip((parameters.Page - 1) * parameters.PageSize)
-                    .Take(parameters.PageSize).Select(d => new DeliveryDTO
+                deliveryQuery = deliveryQuery.Where(p => parameters.Id.Equals(p.PharmacyId));
+            } 
+
+            //if (parameters.SortOrder?.ToLower() == 'desc')
+            //{
+            //    deliveryQuery = deliveryQuery.OrderByDescending(parameters.SortColumn);
+            //}
+            //else
+            //{
+            //    deliveryQuery = deliveryQuery.OrderBy();
+            //}
+            
+
+                var deliveryResponseQuery = deliveryQuery.Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).OrderBy(p => p.DeliveryId)
+                    .Select(d => new DeliveryDTO
                     {
                         DeliveryId = d.DeliveryId,
                         UnitCount = d.UnitCount,
@@ -57,24 +70,28 @@ namespace PharmacyProj.Services.Services
                         PharmacyName = d.Pharmacy.Name,
                         DrugName = d.Drug.DrugName,
                         WarehouseName = d.Warehouse.Name
-                    })
-                    .ToListAsync();
-            }
-            return await _dbContext.Delivery.Where(p => parameters.Id.Equals(p.PharmacyId)).Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).Select(d => new DeliveryDTO
-            {
-                DeliveryId = d.DeliveryId,
-                UnitCount = d.UnitCount,
-                UnitPrice = d.UnitPrice,
-                TotalPrice = d.TotalPrice,
-                DeliveryDate = d.DeliveryDate,
-                CreatedDate = d.CreatedDate,
-                UpdatedDate = d.UpdatedDate,
-                CreatedBy = d.CreatedBy,
-                UpdatedBy = d.UpdatedBy,
-                PharmacyName = d.Pharmacy.Name,
-                DrugName = d.Drug.DrugName,
-                WarehouseName = d.Warehouse.Name
-            }).ToListAsync();
+                    });
+
+                var deliveries = await PagedList<DeliveryDTO>.CreateAsync(deliveryResponseQuery, parameters.Page, parameters.PageSize);
+                    return deliveries;
+            //var deliveryResponseQuery =  _dbContext.Delivery.Where(p => parameters.Id.Equals(p.PharmacyId)).Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).Select(d => new DeliveryDTO
+            //{
+            //    DeliveryId = d.DeliveryId,
+            //    UnitCount = d.UnitCount,
+            //    UnitPrice = d.UnitPrice,
+            //    TotalPrice = d.TotalPrice,
+            //    DeliveryDate = d.DeliveryDate,
+            //    CreatedDate = d.CreatedDate,
+            //    UpdatedDate = d.UpdatedDate,
+            //    CreatedBy = d.CreatedBy,
+            //    UpdatedBy = d.UpdatedBy,
+            //    PharmacyName = d.Pharmacy.Name,
+            //    DrugName = d.Drug.DrugName,
+            //    WarehouseName = d.Warehouse.Name
+            //});
+
+            //var deliveries = await PagedList<DeliveryDTO>.CreateAsync(deliveryResponseQuery, parameters.Page, parameters.PageSize);
+            //        return deliveries;
         }
 
  

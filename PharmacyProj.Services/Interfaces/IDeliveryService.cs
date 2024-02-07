@@ -6,7 +6,7 @@ namespace PharmacyProj.Services.Interfaces
 {
     public interface IDeliveryService
     {
-        Task<List<DeliveryDTO>> GetDeliveryListAsync(QueryParameters parameters);
+        Task<PagedList<DeliveryDTO>> GetDeliveryListAsync(QueryParameters parameters);
         Task<Delivery> UpdateDeliveryAsync(Delivery delivery);
         Task<Delivery> DeleteDeliveryAsync(Delivery delivery);
     }

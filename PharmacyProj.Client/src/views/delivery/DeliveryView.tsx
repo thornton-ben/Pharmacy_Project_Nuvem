@@ -28,6 +28,7 @@ import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
 import { Save, Close, Edit } from "@mui/icons-material"
 import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
+import { useParams } from "react-router-dom"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
 import IDelivery from "../../interfaces/IDelivery"
@@ -49,6 +50,9 @@ export const DeliveryView = () => {
     {},
   )
   const stateStatus = useSelector(getDeliveryStatus)
+  const [paginationModel, setPaginationModel] = React.useState({page: 0, pageSize: 5});
+  const { pharmacyId } = useParams<{ pharmacyId: string }>()
+  const [selectedPharma, setSelectedPharmal] = React.useState<number>(Number(pharmacyId));
 
   useEffect(() => {
     dispatch(fetchDelivery(undefined))
