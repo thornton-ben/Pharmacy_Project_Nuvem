@@ -67,31 +67,13 @@ namespace PharmacyProj.Services.Services
                         UpdatedDate = d.UpdatedDate,
                         CreatedBy = d.CreatedBy,
                         UpdatedBy = d.UpdatedBy,
-                        PharmacyName = d.Pharmacy.Name,
-                        DrugName = d.Drug.DrugName,
-                        WarehouseName = d.Warehouse.Name
+                        PharmacyName = d.Pharmacy.Name ?? null,
+                        DrugName = d.Drug.DrugName ?? null,
+                        WarehouseName = d.Warehouse.Name ?? null
                     });
 
                 var deliveries = await PagedList<DeliveryDTO>.CreateAsync(deliveryResponseQuery, parameters.Page, parameters.PageSize);
                     return deliveries;
-            //var deliveryResponseQuery =  _dbContext.Delivery.Where(p => parameters.Id.Equals(p.PharmacyId)).Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).Select(d => new DeliveryDTO
-            //{
-            //    DeliveryId = d.DeliveryId,
-            //    UnitCount = d.UnitCount,
-            //    UnitPrice = d.UnitPrice,
-            //    TotalPrice = d.TotalPrice,
-            //    DeliveryDate = d.DeliveryDate,
-            //    CreatedDate = d.CreatedDate,
-            //    UpdatedDate = d.UpdatedDate,
-            //    CreatedBy = d.CreatedBy,
-            //    UpdatedBy = d.UpdatedBy,
-            //    PharmacyName = d.Pharmacy.Name,
-            //    DrugName = d.Drug.DrugName,
-            //    WarehouseName = d.Warehouse.Name
-            //});
-
-            //var deliveries = await PagedList<DeliveryDTO>.CreateAsync(deliveryResponseQuery, parameters.Page, parameters.PageSize);
-            //        return deliveries;
         }
 
  

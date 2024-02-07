@@ -1,4 +1,12 @@
-﻿USE [PharmacyDb]
+﻿-- =============================================
+-- Author: Benjamin Thornton
+-- Create date: 2/1/2024
+-- Description:	List all Pharmacists each with Pharmacy Name they work at, name of the drugs they sold, total unit count that their pharmacy sold the drug, 
+-- and rank them for total unit count times
+-- =============================================
+
+
+USE [PharmacyDb]
 GO
 
 CREATE PROCEDURE [dbo].[PharmacistProductionReport]
