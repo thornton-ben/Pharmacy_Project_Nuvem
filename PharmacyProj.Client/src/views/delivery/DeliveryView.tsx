@@ -83,14 +83,8 @@ export const DeliveryView = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "DeliveryId",
-      headerName: "Id",
-      width: 130,
-      editable: false,
-    },
-    {
-      field: "warehouseId",
-      headerName: "warehouseId",
+      field: "warehouseName",
+      headerName: "Warehouse",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -103,8 +97,8 @@ export const DeliveryView = () => {
       },
     },
     {
-      field: "pharmacyId",
-      headerName: "PharmacyId",
+      field: "pharmacyName",
+      headerName: "Pharmacy",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -117,8 +111,8 @@ export const DeliveryView = () => {
       },
     },
     {
-      field: "drugId",
-      headerName: "drugId",
+      field: "drugName",
+      headerName: "Drug",
       width: 130,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {

@@ -15,7 +15,7 @@ namespace PharmacyProj.Entities.Entities
         [Required]
         public int? DrugId { get; set; }
         [Required]
-        public int?  UnitCount { get; set; }
+        public int? UnitCount { get; set; }
         [Required]
         public decimal? UnitPrice { get; set; }
         [Required]
@@ -28,6 +28,10 @@ namespace PharmacyProj.Entities.Entities
         public string? CreatedBy { get; set; }
 
         public string? UpdatedBy { get; set; }
+        public required Pharmacy Pharmacy { get; set; }
+        public required Drug Drug { get; set; } 
+        public required Warehouse Warehouse { get; set; }
+
     }
 }
 

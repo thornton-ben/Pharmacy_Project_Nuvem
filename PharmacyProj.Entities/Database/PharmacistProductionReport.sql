@@ -11,38 +11,38 @@ WITH PharmacistDrugSales AS (
         SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacist
     FROM
         PharmacySale PS
+    JOIN Pharmacist P ON PS.PharmacistId = P.PharmacistId
     GROUP BY
         PS.PharmacistId,
         PS.DrugId
-)
-SELECT
-    PH.PharmacistId,
-    PH.FirstName, 
-	PH.LastName,
- P.PharmacyId,
-    P.Name AS PharmacyName,
-    PD.DrugId,
-    D.DrugName,
-    PD.TotalUnitsSoldByPharmacist,
-    PD2.TotalUnitsSoldByPharmacy
-FROM
-    Pharmacist PH
-INNER JOIN
-    Pharmacy P ON PH.PharmacyId = P.PharmacyId
-INNER JOIN
-    PharmacistDrugSales PD ON PH.PharmacistId = PD.PharmacistId
-INNER JOIN
-    Drug D ON PD.DrugId = D.DrugId
-INNER JOIN (
+),
+PharmacyTotalUnitsSold AS (
     SELECT
         PS.DrugId,
         SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacy
     FROM
         PharmacySale PS
+    JOIN Pharmacist P ON PS.PharmacistId = P.PharmacistId
     GROUP BY
         PS.DrugId
-) PD2 ON PD.DrugId = PD2.DrugId
-ORDER BY PharmacistId, TotalUnitsSoldByPharmacist DESC
+)
+SELECT
+    P.FirstName, 
+    P.LastName,
+    PH.Name AS PharmacyName,
+    D.DrugName,
+    PD.TotalUnitsSoldByPharmacist,
+    PT.TotalUnitsSoldByPharmacy
+FROM
+    Pharmacist P
+JOIN PharmacistDrugSales PD ON P.PharmacistId = PD.PharmacistId
+JOIN Drug D ON PD.DrugId = D.DrugId
+JOIN Pharmacy PH ON P.PharmacyId = PH.PharmacyId
+JOIN PharmacyTotalUnitsSold PT ON PD.DrugId = PT.DrugId
+ORDER BY 
+    PharmacyName, 
+    LastName, 
+    TotalUnitsSoldByPharmacist DESC;
 END
 GO
 

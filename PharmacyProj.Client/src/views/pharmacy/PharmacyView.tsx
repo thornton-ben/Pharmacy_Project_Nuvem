@@ -84,12 +84,6 @@ export const PharmacyView = () => {
   
   const columns: GridColDef[] = [
     {
-      field: "id",
-      headerName: "Id",
-      width: 130,
-      editable: false,
-    },
-    {
       field: "name",
       headerName: "Name",
       width: 130,
