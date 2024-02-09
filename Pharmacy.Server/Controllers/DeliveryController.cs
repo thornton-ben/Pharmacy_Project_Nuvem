@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PharmacyProj.Entities.Entities;
+using PharmacyProj.Services.DTO;
 using PharmacyProj.Services.Helpers;
 using PharmacyProj.Services.Interfaces;
 
@@ -23,11 +24,11 @@ namespace PharmacyProj.Server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Delivery>> GetDeliveryList(QueryParameters getParams)
+        public async Task<ActionResult<DeliveryDTO>> GetDeliveryList([FromBody]QueryParameters getParams)
         {
             try
             {
-                List<Delivery> result = await _deliveryService.GetDeliveryListAsync(getParams);
+                PagedList<DeliveryDTO> result = await _deliveryService.GetDeliveryListAsync(getParams);
                 return Ok(result);
             }
             catch (Exception ex)

@@ -1,5 +1,7 @@
 export type getParams = {
-    pageSize?: number,
-    page?: number,
-    id?: number[]
-};
+  sortColumn?: string
+  sortOrder?: string
+  pageSize?: number
+  page?: number
+  id?: number
+}

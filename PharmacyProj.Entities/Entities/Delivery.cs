@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PharmacyProj.Entities.Entities
 {
@@ -15,7 +16,7 @@ namespace PharmacyProj.Entities.Entities
         [Required]
         public int? DrugId { get; set; }
         [Required]
-        public int?  UnitCount { get; set; }
+        public int? UnitCount { get; set; }
         [Required]
         public decimal? UnitPrice { get; set; }
         [Required]
@@ -28,6 +29,11 @@ namespace PharmacyProj.Entities.Entities
         public string? CreatedBy { get; set; }
 
         public string? UpdatedBy { get; set; }
+
+        public virtual Pharmacy? Pharmacy { get; set; }
+        public virtual Warehouse? Warehouse { get; set; }
+        public virtual Drug? Drug { get; set; }
+
     }
 }
 

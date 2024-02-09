@@ -1,5 +1,6 @@
 import React from "react"
 import { PharmacyView } from "./views/pharmacy/PharmacyView"
+import { DeliveryView } from "./views/delivery/DeliveryView"
 import { Route, Routes } from "react-router-dom"
 import NavBar from "./components/navBar/NavBar"
 import "./App.css"
@@ -12,6 +13,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<PharmacyView />} />
+          <Route path="/delivery/:pharmacyId?" element={<DeliveryView />} />
         </Routes>
       </div>
     </>

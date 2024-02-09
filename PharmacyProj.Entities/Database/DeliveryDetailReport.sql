@@ -1,4 +1,10 @@
-﻿USE [PharmacyDb]
+﻿-- =============================================
+-- Author: Benjamin Thornton
+-- Create date: 2/1/2024
+-- Description:	All delivery records with Warhouse From and Pharmacy To names
+-- =============================================
+
+USE [PharmacyDb]
 GO
 
 CREATE PROCEDURE [dbo].[DeliveryDetailReport]

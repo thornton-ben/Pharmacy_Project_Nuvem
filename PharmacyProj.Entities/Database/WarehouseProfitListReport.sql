@@ -1,4 +1,10 @@
-﻿USE [PharmacyDb]
+﻿-- =============================================
+-- Author: Benjamin Thornton
+-- Create date: 2/1/2024
+-- Description:	All Warehouse records with a column showing total delivery revenue and total unit count for each, and total revenue/units average profit.
+-- =============================================
+
+USE [PharmacyDb]
 GO
 
 CREATE PROCEDURE [dbo].[GetWarehouseProfitList] 

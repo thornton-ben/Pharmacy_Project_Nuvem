@@ -26,6 +26,10 @@ namespace PharmacyProj.Services
                 new Pharmacy {PharmacyId = 4, Name = "Kroger Pharmacy", Address = "101 Elm St", City = "McKinney", State = "TX", Zip = "45678", FilledPrescriptions = 125, CreatedDate = DateTime.Now, CreatedBy = "ben@test.com" },
                 new Pharmacy {PharmacyId = 5, Name = "HEB Pharmacy", Address = "202 Birch St", City = "Frisco", State = "TX", Zip = "56789", FilledPrescriptions = 150, CreatedDate = DateTime.Now, CreatedBy = "ben@test.com" }
                 );
+
+            //modelBuilder.Entity<Delivery>()
+            //            .HasOne(u => u.PharmacyId)
+            //            .WithMany()
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,8 +1,8 @@
 export default interface IDelivery {
   deliveryId: number
-  warehouseId: number
-  pharmacyId: number
-  drugId: number
+  warehouseName: number
+  pharmacyName: number
+  drugName: number
   unitCount: number
   unitPrice: number
   totalPrice?: number

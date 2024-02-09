@@ -1,30 +1,56 @@
-﻿USE [PharmacyDb]
+﻿-- =============================================
+-- Author: Benjamin Thornton
+-- Create date: 2/1/2024
+-- Description:	List all Pharmacists each with Pharmacy Name they work at, name of the drugs they sold, total unit count that their pharmacy sold the drug, 
+-- and rank them for total unit count times
+-- =============================================
+
+
+USE [PharmacyDb]
 GO
 
 CREATE PROCEDURE [dbo].[PharmacistProductionReport]
 AS
 BEGIN
+WITH PharmacistDrugSales AS (
     SELECT
-        P.PharmacistId ,
-        P.FirstName,
-        P.LastName,
-        Ph.Name AS PharmacyName,
-        D.DrugName,
-        SUM(S.UnitsSold) AS TotalUnitCount,
-        RANK() OVER (ORDER BY SUM(S.UnitsSold * S.SalePrice) DESC) AS Rank
+        PS.PharmacistId,
+        PS.DrugId,
+        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacist
     FROM
-       Pharmacist P
-        JOIN Pharmacy Ph ON P.PharmacyId = Ph.PharmacyId
-        JOIN PharmacySales S ON P.PharmacistId = S.PharmacistId
-        JOIN Drug D ON S.DrugId = D.DrugId
+        PharmacySale PS
+    JOIN Pharmacist P ON PS.PharmacistId = P.PharmacistId
     GROUP BY
-        P.PharmacistId,
-		P.FirstName,
-		P.LastName,
-        Ph.Name,
-        D.DrugName
-    ORDER BY
-        Rank;
+        PS.PharmacistId,
+        PS.DrugId
+),
+PharmacyTotalUnitsSold AS (
+    SELECT
+        PS.DrugId,
+        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacy
+    FROM
+        PharmacySale PS
+    JOIN Pharmacist P ON PS.PharmacistId = P.PharmacistId
+    GROUP BY
+        PS.DrugId
+)
+SELECT
+    P.FirstName, 
+    P.LastName,
+    PH.Name AS PharmacyName,
+    D.DrugName,
+    PD.TotalUnitsSoldByPharmacist,
+    PT.TotalUnitsSoldByPharmacy
+FROM
+    Pharmacist P
+JOIN PharmacistDrugSales PD ON P.PharmacistId = PD.PharmacistId
+JOIN Drug D ON PD.DrugId = D.DrugId
+JOIN Pharmacy PH ON P.PharmacyId = PH.PharmacyId
+JOIN PharmacyTotalUnitsSold PT ON PD.DrugId = PT.DrugId
+ORDER BY 
+    PharmacyName, 
+    LastName, 
+    TotalUnitsSoldByPharmacist DESC;
 END
 GO
 
