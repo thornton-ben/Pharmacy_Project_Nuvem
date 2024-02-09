@@ -25,6 +25,8 @@ const initialState: IPharmacyState = {
   error: "",
 }
 
+
+
 export const fetchPharmacy = (getParams: getParams | undefined) => fetchPharmacyListAsync(getParams)
 export const putPharmacy = (pharmacy: IPharmacy | undefined) => savePharmacyAsync(pharmacy)
 

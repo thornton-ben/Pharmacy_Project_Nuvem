@@ -26,7 +26,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/DeleteOutlined"
 import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
-import { Save, Close, Edit } from "@mui/icons-material"
+import { Save, Close, Edit, LocalShipping, LocalShippingOutlined } from "@mui/icons-material"
 import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
@@ -39,8 +39,9 @@ import {
   handleCancelClick,
   handleRowEditStop,
   handleProcessRowUpdateError,
-  handleRowModesModelChange
+  handleRowModesModelChange,
 } from "../../utilities/GridUtilities"
+import { Link } from "react-router-dom"
 
 export const PharmacyView = () => {
   const pharmacyList = useAppSelector(getPharmacyData)
@@ -71,7 +72,7 @@ export const PharmacyView = () => {
 
   const processRowUpdate = async (newRow: IPharmacy) => {
     const response: any = await dispatch(putPharmacy(newRow))
-    const returnedPharmacy: any = response.payload;
+    const returnedPharmacy: any = response.payload
     setSnackbar({ children: "Successfully saved", severity: "success" })
     dispatch(
       updatePharmacySlice({
@@ -79,9 +80,9 @@ export const PharmacyView = () => {
         updateData: returnedPharmacy,
       }),
     )
-    return returnedPharmacy;
+    return returnedPharmacy
   }
-  
+
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -227,13 +228,20 @@ export const PharmacyView = () => {
         }
 
         return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={() => handleEditClick(id, rowModesModel, setRowModesModel)}
-            color="inherit"
-          />,
+          <>
+            <GridActionsCellItem
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              onClick={() =>
+                handleEditClick(id, rowModesModel, setRowModesModel)
+              }
+              color="inherit"
+            />            
+            <Link to={`/delivery/${id}`} className="text-black">
+              <LocalShippingOutlined />
+            </Link>            
+          </>,
         ]
       },
     },
@@ -246,7 +254,7 @@ export const PharmacyView = () => {
         {stateStatus === "loading" && <Loading></Loading>}
         <DataGrid
           rows={pharmacyRows}
-          getRowId={p => p.pharmacyId}
+          getRowId={(p) => p.pharmacyId}
           columns={columns}
           editMode="row"
           rowModesModel={rowModesModel}

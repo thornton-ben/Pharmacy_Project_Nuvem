@@ -9,22 +9,24 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { RootState } from "../app/store"
 import { GridValidRowModel } from "@mui/x-data-grid"
 import { act } from "react-dom/test-utils"
+import { T } from "vitest/dist/types-e3c9754d.js"
 const requestConfig: AxiosRequestConfig = {
   baseURL: import.meta.env.VITE_BASE_URL,
 }
 
 interface IDeliveryState {
-  data: IDelivery[]
-  status: "idle" | "loading" | "failed" | "succeeded" | "saving"
-  error: any
+  data: Array<IDelivery>
+  totalCount: number | undefined
+  status: string | undefined
+  error: string | undefined
 }
 
 const initialState: IDeliveryState = {
   data: [],
+  totalCount: 0,
   status: "idle",
   error: "",
 }
-
 
 export const fetchDelivery = (getParams: getParams | undefined) =>
   fetchDeliveryListAsync(getParams)
@@ -37,7 +39,9 @@ export const DeliverySlice = createSlice({
   reducers: {
     updateDeliverySlice: (state, action: PayloadAction<any>) => {
       const { id, updateData } = action.payload
-      const targetDelivery = state.data.find((delivery) => delivery.deliveryId === id)
+      const targetDelivery = state.data.find(
+        (delivery) => delivery.deliveryId === id,
+      )
       if (targetDelivery) {
         state.data = state.data.map((delivery) => {
           return delivery.deliveryId === id ? updateData : delivery
@@ -52,7 +56,8 @@ export const DeliverySlice = createSlice({
       })
       .addCase(fetchDeliveryListAsync.fulfilled, (state, action) => {
         state.status = "idle"
-        state.data = action.payload
+        state.data = action.payload.items
+        state.totalCount = action.payload.totalCount
       })
       .addCase(fetchDeliveryListAsync.rejected, (state, action) => {
         state.status = "failed"

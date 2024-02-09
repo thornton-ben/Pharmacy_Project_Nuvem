@@ -67,9 +67,9 @@ namespace PharmacyProj.Services.Services
                         UpdatedDate = d.UpdatedDate,
                         CreatedBy = d.CreatedBy,
                         UpdatedBy = d.UpdatedBy,
-                        PharmacyName = d.Pharmacy.Name ?? null,
-                        DrugName = d.Drug.DrugName ?? null,
-                        WarehouseName = d.Warehouse.Name ?? null
+                        PharmacyName = d.Pharmacy != null ? d.Pharmacy.Name : null,
+                        DrugName = d.Drug != null ? d.Drug.DrugName : null,
+                        WarehouseName = d.Warehouse != null ? d.Warehouse.Name : null
                     });
 
                 var deliveries = await PagedList<DeliveryDTO>.CreateAsync(deliveryResponseQuery, parameters.Page, parameters.PageSize);

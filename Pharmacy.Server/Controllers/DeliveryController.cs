@@ -24,7 +24,7 @@ namespace PharmacyProj.Server.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DeliveryDTO>> GetDeliveryList(QueryParameters getParams)
+        public async Task<ActionResult<DeliveryDTO>> GetDeliveryList([FromBody]QueryParameters getParams)
         {
             try
             {

@@ -52,10 +52,15 @@ export const DeliveryView = () => {
   const stateStatus = useSelector(getDeliveryStatus)
   const [paginationModel, setPaginationModel] = React.useState({page: 0, pageSize: 5});
   const { pharmacyId } = useParams<{ pharmacyId: string }>()
-  const [selectedPharma, setSelectedPharmal] = React.useState<number>(Number(pharmacyId));
+  const [selectedPharmacy, setSelectedPharmacy] = React.useState<number>(Number(pharmacyId));
+  const [getParameters, setGetParameters] = React.useState<getParams>({
+    pageSize: 5,
+    page: 1,
+    id: Number(pharmacyId)
+});
 
   useEffect(() => {
-    dispatch(fetchDelivery(undefined))
+    dispatch(fetchDelivery(getParameters))
   }, [])
 
   useEffect(() => {
@@ -184,62 +189,62 @@ export const DeliveryView = () => {
           : new Date(params.row.createdDate)
       },
     },
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
-      width: 100,
-      cellClassName: "actions",
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
+    // {
+    //   field: "actions",
+    //   type: "actions",
+    //   headerName: "Actions",
+    //   width: 100,
+    //   cellClassName: "actions",
+    //   getActions: ({ id }) => {
+    //     const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
 
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: "primary.main",
-              }}
-              onClick={() =>
-                handleSaveClick(
-                  id,
-                  rowModesModel,
-                  setRowModesModel,
-                  validationErrorsRef,
-                )
-              }
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={() =>
-                handleCancelClick(
-                  id,
-                  rowModesModel,
-                  setRowModesModel,
-                  deliveryRows,
-                  setDeliveryRows,
-                  validationErrorsRef,
-                )
-              }
-              color="inherit"
-            />,
-          ]
-        }
+    //     if (isInEditMode) {
+    //       return [
+    //         <GridActionsCellItem
+    //           icon={<SaveIcon />}
+    //           label="Save"
+    //           sx={{
+    //             color: "primary.main",
+    //           }}
+    //           onClick={() =>
+    //             handleSaveClick(
+    //               id,
+    //               rowModesModel,
+    //               setRowModesModel,
+    //               validationErrorsRef,
+    //             )
+    //           }
+    //         />,
+    //         <GridActionsCellItem
+    //           icon={<CancelIcon />}
+    //           label="Cancel"
+    //           className="textPrimary"
+    //           onClick={() =>
+    //             handleCancelClick(
+    //               id,
+    //               rowModesModel,
+    //               setRowModesModel,
+    //               deliveryRows,
+    //               setDeliveryRows,
+    //               validationErrorsRef,
+    //             )
+    //           }
+    //           color="inherit"
+    //         />,
+    //       ]
+    //     }
 
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={() => handleEditClick(id, rowModesModel, setRowModesModel)}
-            color="inherit"
-          />,
-        ]
-      },
-    },
+    //     return [
+    //       <GridActionsCellItem
+    //         icon={<EditIcon />}
+    //         label="Edit"
+    //         className="textPrimary"
+    //         onClick={() => handleEditClick(id, rowModesModel, setRowModesModel)}
+    //         color="inherit"
+    //       />,
+    //     ]
+    //   },
+    // },
   ]
 
   return (
