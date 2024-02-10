@@ -1,3 +1,7 @@
 .nav-bar {
   justify-content: center;
 }
+
+.nav-link-first {
+  padding-right: 2rem;
+}

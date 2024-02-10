@@ -29,6 +29,7 @@ export const handleEditClick = (
 }
 
 export const handleSaveClick = (
+  setSnackbar: Dispatch<SetStateAction<Pick<AlertProps, 'children' | 'severity'> | null>>,
   id: GridRowId,
   rowModesModel: GridRowModesModel,
   setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
@@ -47,6 +48,15 @@ export const handleSaveClick = (
     const errors = Object.values(rowValidationErrors).filter(
       (hasError) => hasError === true,
     )
+    
+    let keysWithValueTrue = "";
+    for (const key in rowValidationErrors) {
+      if (rowValidationErrors[key] === true) {
+        keysWithValueTrue += `${key.toString()} `
+      }
+    }
+
+    
     if (errors.length === 0) {
       setRowModesModel({
         ...rowModesModel,
@@ -54,6 +64,11 @@ export const handleSaveClick = (
       })
       validationErrorsRef.current[id] = undefined
       return
+    } else {
+        setSnackbar({
+          children: `Invalid input for columns: ${keysWithValueTrue}`,
+          severity: "error",
+        })
     }
   }
 
@@ -64,12 +79,12 @@ export const handleCancelClick = (
   id: GridRowId,
   rowModesModel: GridRowModesModel,
   setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
-rows: any[],
+  rows: any[],
   setRows: Dispatch<SetStateAction<any>>,
   validationErrorsRef: React.MutableRefObject<{
     [key: string]: { [key: string]: boolean } | undefined
   }>,
-setgirdActionsDisabled?: Dispatch<SetStateAction<boolean>>,
+  setgirdActionsDisabled?: Dispatch<SetStateAction<boolean>>,
 ) => {
   setRowModesModel({
     ...rowModesModel,
@@ -82,11 +97,9 @@ export const handleProcessRowUpdateError = (
   setSnackbar: Dispatch<
     SetStateAction<Pick<AlertProps, "children" | "severity"> | null>
   >,
-  error: Error,
+error: Error,
 ) => {
-  return () => {
     setSnackbar({ children: error.message, severity: "error" })
-  }
 }
 
 export const handleRowModesModelChange = (

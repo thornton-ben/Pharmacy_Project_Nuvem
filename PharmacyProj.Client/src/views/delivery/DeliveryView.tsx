@@ -7,6 +7,8 @@ import {
   updateDeliverySlice,
   getDeliveryStatus,
   DeliverySlice,
+  getDeliveryError,
+  getTotalDeliveryCount,
 } from "../../slicers/deliverySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
@@ -43,25 +45,41 @@ import {
 } from "../../utilities/GridUtilities"
 
 export const DeliveryView = () => {
-  const deliveryList = useAppSelector(getDeliveryData)
-  const dispatch = useAppDispatch()
-  const [deliveryRows, setDeliveryRows] = useState(deliveryList)
+  const dispatch = useAppDispatch();
+  const deliveryList = useAppSelector(getDeliveryData);
+  const deliveryStatus = useSelector(getDeliveryStatus);
+  const deliveryError = useSelector(getDeliveryError);
+  const [deliveryRows, setDeliveryRows] = useState(deliveryList);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
-  )
-  const stateStatus = useSelector(getDeliveryStatus)
-  const [paginationModel, setPaginationModel] = React.useState({page: 0, pageSize: 5});
-  const { pharmacyId } = useParams<{ pharmacyId: string }>()
-  const [selectedPharmacy, setSelectedPharmacy] = React.useState<number>(Number(pharmacyId));
-  const [getParameters, setGetParameters] = React.useState<getParams>({
+  );
+  const totalDeliveryCount = useSelector(getTotalDeliveryCount);
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 5,
+  });
+  const { pharmacyId } = useParams<{ pharmacyId: string }>();
+  const [paginationParameters, setPaginationParameters] = React.useState<getParams>({
     pageSize: 5,
     page: 1,
     id: Number(pharmacyId)
 });
+const updatePaginationParameters = () => {
+  setPaginationParameters({...paginationParameters, page: paginationModel.page + 1, pageSize: paginationModel.pageSize})
+}
 
+const getDeliveries = () => {
+  dispatch(fetchDelivery({ pageSize: paginationModel.pageSize, page: paginationModel.page + 1, id: Number(pharmacyId) }))
+};
+
+// useEffect(() => {
+  //   dispatch(fetchDelivery(paginationParameters))
+  // }, [])
   useEffect(() => {
-    dispatch(fetchDelivery(getParameters))
-  }, [])
+    // how to update get parameters before fetching
+    // updatePaginationParameters()
+    getDeliveries()
+  }, [paginationModel])
 
   useEffect(() => {
     setDeliveryRows(deliveryList)
@@ -189,69 +207,13 @@ export const DeliveryView = () => {
           : new Date(params.row.createdDate)
       },
     },
-    // {
-    //   field: "actions",
-    //   type: "actions",
-    //   headerName: "Actions",
-    //   width: 100,
-    //   cellClassName: "actions",
-    //   getActions: ({ id }) => {
-    //     const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
-
-    //     if (isInEditMode) {
-    //       return [
-    //         <GridActionsCellItem
-    //           icon={<SaveIcon />}
-    //           label="Save"
-    //           sx={{
-    //             color: "primary.main",
-    //           }}
-    //           onClick={() =>
-    //             handleSaveClick(
-    //               id,
-    //               rowModesModel,
-    //               setRowModesModel,
-    //               validationErrorsRef,
-    //             )
-    //           }
-    //         />,
-    //         <GridActionsCellItem
-    //           icon={<CancelIcon />}
-    //           label="Cancel"
-    //           className="textPrimary"
-    //           onClick={() =>
-    //             handleCancelClick(
-    //               id,
-    //               rowModesModel,
-    //               setRowModesModel,
-    //               deliveryRows,
-    //               setDeliveryRows,
-    //               validationErrorsRef,
-    //             )
-    //           }
-    //           color="inherit"
-    //         />,
-    //       ]
-    //     }
-
-    //     return [
-    //       <GridActionsCellItem
-    //         icon={<EditIcon />}
-    //         label="Edit"
-    //         className="textPrimary"
-    //         onClick={() => handleEditClick(id, rowModesModel, setRowModesModel)}
-    //         color="inherit"
-    //       />,
-    //     ]
-    //   },
-    // },
   ]
 
   return (
     <>
       <div>Delivery View</div>
       <div className="container-xxl">
-        {stateStatus === "loading" && <Loading></Loading>}
+        {deliveryStatus === "loading" && <Loading></Loading>}
         <DataGrid
           rows={deliveryRows}
           getRowId={(p) => p.deliveryId}
@@ -260,13 +222,14 @@ export const DeliveryView = () => {
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          paginationModel={paginationModel}
+          rowCount={totalDeliveryCount}
+          onPaginationModelChange={setPaginationModel}
+          paginationMode="server"
           onProcessRowUpdateError={(error) =>
             handleProcessRowUpdateError(setSnackbar, error)
           }
           pageSizeOptions={[5]}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
           slotProps={{
             toolbar: { setDeliveryRows, setRowModesModel },
           }}

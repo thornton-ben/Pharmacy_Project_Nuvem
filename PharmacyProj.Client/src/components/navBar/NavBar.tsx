@@ -11,10 +11,9 @@ export default function NavBar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar className="nav-bar">
-            <Link color="inherit" href="/">
+            <Link className="nav-link-first" color="inherit" href="/">
               Pharmacy
             </Link>
-            &nbsp;
             <Link color="inherit" href="/delivery">
               Delivery
             </Link>

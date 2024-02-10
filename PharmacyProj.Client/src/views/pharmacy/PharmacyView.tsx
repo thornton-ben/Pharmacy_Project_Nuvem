@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import "./PharmacyView.css"
 import {
   getPharmacyData,
@@ -19,6 +19,7 @@ import {
   GridActionsCellItem,
   GridValueGetterParams,
   GridPreProcessEditCellProps,
+  GridRowId,
 } from "@mui/x-data-grid"
 import Button from "@mui/material/Button"
 import AddIcon from "@mui/icons-material/Add"
@@ -63,6 +64,7 @@ export const PharmacyView = () => {
   const validationErrorsRef = React.useRef<{
     [key: string]: { [key: string]: boolean }
   }>({})
+
   const [snackbar, setSnackbar] = React.useState<Pick<
     AlertProps,
     "children" | "severity"
@@ -201,6 +203,7 @@ export const PharmacyView = () => {
               }}
               onClick={() =>
                 handleSaveClick(
+                  setSnackbar,
                   id,
                   rowModesModel,
                   setRowModesModel,
