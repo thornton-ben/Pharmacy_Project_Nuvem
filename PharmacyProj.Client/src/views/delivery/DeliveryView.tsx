@@ -22,14 +22,6 @@ import {
   GridValueGetterParams,
   GridPreProcessEditCellProps,
 } from "@mui/x-data-grid"
-import Button from "@mui/material/Button"
-import AddIcon from "@mui/icons-material/Add"
-import EditIcon from "@mui/icons-material/Edit"
-import DeleteIcon from "@mui/icons-material/DeleteOutlined"
-import SaveIcon from "@mui/icons-material/Save"
-import CancelIcon from "@mui/icons-material/Close"
-import { Save, Close, Edit } from "@mui/icons-material"
-import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
 import { useParams } from "react-router-dom"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
@@ -37,12 +29,10 @@ import IDelivery from "../../interfaces/IDelivery"
 import { useSelector } from "react-redux"
 import Loading from "../../components/loading/Loading"
 import {
-  handleEditClick,
-  handleSaveClick,
-  handleCancelClick,
   handleRowEditStop,
   handleProcessRowUpdateError,
 } from "../../utilities/GridUtilities"
+import formatUSCurrency from "../../utilities/formatters/currencyFormatter"
 
 export const DeliveryView = () => {
   const dispatch = useAppDispatch();
@@ -170,6 +160,7 @@ const getDeliveries = () => {
       headerName: "UnitPrice",
       width: 130,
       editable: true,
+      valueFormatter: (params) => formatUSCurrency(params.value),
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length != 5
         validationErrorsRef.current[params.id] = {
@@ -184,6 +175,7 @@ const getDeliveries = () => {
       headerName: "TotalPrice",
       width: 130,
       editable: true,
+      valueFormatter: (params) => formatUSCurrency(params.value),
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value < 0 || params.props.value == null
         validationErrorsRef.current[params.id] = {
