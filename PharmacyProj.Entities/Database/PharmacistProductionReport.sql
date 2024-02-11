@@ -16,7 +16,8 @@ WITH PharmacistDrugSales AS (
     SELECT
         PS.PharmacistId,
         PS.DrugId,
-        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacist
+        SUM(PS.UnitsSold) AS TotalUnitsSoldByPharmacist,
+        SUM(PS.UnitsSold * PS.SalePrice) AS Revenue
     FROM
         PharmacySale PS
     JOIN Pharmacist P ON PS.PharmacistId = P.PharmacistId
@@ -40,7 +41,8 @@ SELECT
     PH.Name AS PharmacyName,
     D.DrugName,
     PD.TotalUnitsSoldByPharmacist,
-    PT.TotalUnitsSoldByPharmacy
+    PT.TotalUnitsSoldByPharmacy,
+    RANK() OVER(PARTITION BY P.FirstName, P.LastName ORDER BY PD.Revenue DESC) AS RevenueRank
 FROM
     Pharmacist P
 JOIN PharmacistDrugSales PD ON P.PharmacistId = PD.PharmacistId
@@ -50,7 +52,7 @@ JOIN PharmacyTotalUnitsSold PT ON PD.DrugId = PT.DrugId
 ORDER BY 
     PharmacyName, 
     LastName, 
-    TotalUnitsSoldByPharmacist DESC;
+    RevenueRank;
 END
 GO
 
