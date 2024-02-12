@@ -6,7 +6,6 @@ import {
   putPharmacy,
   updatePharmacySlice,
   getPharmacyStatus,
-  PharmacySlice,
 } from "../../slicers/pharmacySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
@@ -21,14 +20,10 @@ import {
   GridPreProcessEditCellProps,
   GridRowId,
 } from "@mui/x-data-grid"
-import Button from "@mui/material/Button"
-import AddIcon from "@mui/icons-material/Add"
 import EditIcon from "@mui/icons-material/Edit"
-import DeleteIcon from "@mui/icons-material/DeleteOutlined"
 import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
-import { Save, Close, Edit, LocalShipping, LocalShippingOutlined } from "@mui/icons-material"
-import { DATA_GRID_DEFAULT_SLOTS_COMPONENTS } from "@mui/x-data-grid/internals"
+import { Save, Close, Edit, LocalShippingOutlined } from "@mui/icons-material"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
 import IPharmacy from "../../interfaces/IPharmacy"
@@ -40,38 +35,23 @@ import {
   handleCancelClick,
   handleRowEditStop,
   handleProcessRowUpdateError,
-  handleRowModesModelChange,
 } from "../../utilities/GridUtilities"
 import { Link } from "react-router-dom"
 
 export const PharmacyView = () => {
-  const pharmacyList = useAppSelector(getPharmacyData)
-  const dispatch = useAppDispatch()
-  const [pharmacyRows, setPharmacyRows] = useState(pharmacyList)
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {},
-  )
-  const stateStatus = useSelector(getPharmacyStatus)
-
-  useEffect(() => {
-    dispatch(fetchPharmacy(undefined))
-  }, [])
-
-  useEffect(() => {
-    setPharmacyRows(pharmacyList)
-  }, [pharmacyList])
-
+  const pharmacyList = useAppSelector(getPharmacyData);
+  const dispatch = useAppDispatch();
+  const [pharmacyRows, setPharmacyRows] = useState(pharmacyList);
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+  const stateStatus = useSelector(getPharmacyStatus);
   const validationErrorsRef = React.useRef<{
     [key: string]: { [key: string]: boolean }
   }>({})
-
   const [snackbar, setSnackbar] = React.useState<Pick<
     AlertProps,
     "children" | "severity"
   > | null>(null)
-
   const handleCloseSnackbar = () => setSnackbar(null)
-
   const processRowUpdate = async (newRow: IPharmacy) => {
     const response: any = await dispatch(putPharmacy(newRow))
     const returnedPharmacy: any = response.payload
@@ -84,6 +64,15 @@ export const PharmacyView = () => {
     )
     return returnedPharmacy
   }
+
+  useEffect(() => {
+    dispatch(fetchPharmacy(undefined))
+  }, [])
+
+  useEffect(() => {
+    setPharmacyRows(pharmacyList)
+  }, [pharmacyList])
+
 
   const columns: GridColDef[] = [
     {

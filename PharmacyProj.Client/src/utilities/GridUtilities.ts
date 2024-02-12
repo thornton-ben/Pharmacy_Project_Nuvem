@@ -7,7 +7,6 @@ import {
   GridRowModesModel,
   MuiEvent,
 } from "@mui/x-data-grid"
-import IPharmacy from "../interfaces/IPharmacy"
 import React, { Dispatch, SetStateAction } from "react"
 import { AlertProps } from "@mui/material"
 
@@ -72,7 +71,6 @@ export const handleSaveClick = (
     }
   }
 
-  //TODO: What to do if there are validation errors
 }
 
 export const handleCancelClick = (

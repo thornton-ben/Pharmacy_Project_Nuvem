@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { getParams } from "../utilities/getParams"
-import { pharmacyGetUrlFormatter } from "../utilities/formatters/urlFormatter"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 const requestConfig: AxiosRequestConfig = {
