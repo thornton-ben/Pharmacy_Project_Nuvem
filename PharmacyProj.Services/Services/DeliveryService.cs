@@ -24,8 +24,6 @@ namespace PharmacyProj.Services.Services
 
         public async Task<List<Delivery>> GetDeliveryAsync(QueryParameters parameters)
         {
-            //TODO: insert new parameters to get deliveries for a pharmacy or warehouse
-            //insert logic to page
             if (parameters.Id == null)
             {
                 return await _dbContext.Delivery.OrderBy(p => p.DeliveryId)
@@ -43,17 +41,7 @@ namespace PharmacyProj.Services.Services
             if (parameters.Id != null)
             {
                 deliveryQuery = deliveryQuery.Where(p => parameters.Id.Equals(p.PharmacyId));
-            } 
-
-            //if (parameters.SortOrder?.ToLower() == 'desc')
-            //{
-            //    deliveryQuery = deliveryQuery.OrderByDescending(parameters.SortColumn);
-            //}
-            //else
-            //{
-            //    deliveryQuery = deliveryQuery.OrderBy();
-            //}
-            
+            }             
 
                 var deliveryResponseQuery = deliveryQuery.Include(d => d.Pharmacy).Include(d => d.Drug).Include(d => d.Warehouse).OrderBy(p => p.DeliveryId)
                     .Select(d => new DeliveryDTO
@@ -86,7 +74,7 @@ namespace PharmacyProj.Services.Services
                 Id = delivery.DeliveryId
             };
             var existingDeliveryList = await GetDeliveryAsync(queryParams);
-            var existingDelivery = existingDeliveryList[0];
+            var existingDelivery = existingDeliveryList.FirstOrDefault();
 
             if (existingDelivery != null)
             {
@@ -99,7 +87,6 @@ namespace PharmacyProj.Services.Services
                 existingDelivery.UpdatedDate = DateTime.UtcNow;
             }
             await _dbContext.SaveChangesAsync();
-            //need to have logic if delivery doesn't exist to create a new one
 
             return existingDelivery ?? delivery;
         }

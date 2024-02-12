@@ -6,7 +6,6 @@ using PharmacyProj.Services.Interfaces;
 
 namespace PharmacyProj.Server.Controllers
 {
-    //[ApiController]
     [Route("[controller]")]
     public class DeliveryController : ControllerBase
     {

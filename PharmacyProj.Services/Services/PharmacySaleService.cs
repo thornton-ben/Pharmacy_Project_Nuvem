@@ -22,8 +22,6 @@ namespace PharmacyProj.Services.Services
 
         public async Task<List<PharmacySale>> GetPharmacySaleListAsync(QueryParameters parameters)
         {
-            //TODO: insert new parameters to get deliveries for a pharmacy or warehouse
-            //insert logic to page
             if (parameters.Id == null)
             {
                 return await _dbContext.PharmacySale.OrderBy(p => p.PharmacySaleId)
@@ -44,7 +42,7 @@ namespace PharmacyProj.Services.Services
                 Id = pharmacySale.PharmacySaleId
             };
             var existingPharmacySaleList = await GetPharmacySaleListAsync(queryParams);
-            var existingPharmacySale = existingPharmacySaleList[0];
+            var existingPharmacySale = existingPharmacySaleList.FirstOrDefault();
 
             if (existingPharmacySale != null)
             {
@@ -54,8 +52,6 @@ namespace PharmacyProj.Services.Services
                 existingPharmacySale.UpdatedDate = DateTime.UtcNow;
             }
             await _dbContext.SaveChangesAsync();
-            //need to have logic if pharmacySale doesn't exist to create a new one
-            //TODO: have logic to extend Pharmacy and Drug
 
             return existingPharmacySale ?? pharmacySale;
         }

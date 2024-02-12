@@ -1,14 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import {
   savePharmacyAsync,
   fetchPharmacyListAsync,
 } from "../api/PharmacyService"
 import IPharmacy from "../interfaces/IPharmacy"
 import { getParams } from "../utilities/getParams"
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
+import  { AxiosRequestConfig } from "axios"
 import { RootState } from "../app/store"
-import { GridValidRowModel } from "@mui/x-data-grid"
-import { act } from "react-dom/test-utils"
 const requestConfig: AxiosRequestConfig = {
   baseURL: import.meta.env.VITE_BASE_URL,
 }
@@ -34,16 +32,6 @@ export const PharmacySlice = createSlice({
   name: "pharmacy",
   initialState,
   reducers: {
-    getPharmacy: (state, action: PayloadAction<number> | null) => {
-      // if (action?.payload != null) {
-      //   const selectPharmacy = state.data.find(
-      //     (pharmacy) => pharmacy.id === action.payload,
-      //   )
-      //   state.selectedPharmacy = selectPharmacy
-      // } else {
-      //   state.selectedPharmacy = null
-      // }
-    },
     updatePharmacySlice: (state, action: PayloadAction<any>) => {
       const { id, updateData } = action.payload
       const targetPharmacy = state.data.find((pharmacy) => pharmacy.pharmacyId === id)
@@ -83,7 +71,7 @@ export const PharmacySlice = createSlice({
   },
 })
 
-export const { getPharmacy, updatePharmacySlice } = PharmacySlice.actions
+export const { updatePharmacySlice } = PharmacySlice.actions
 export const getPharmacyData = (state: RootState) => state.pharmacy.data
 export const getPharmacyStatus = (state: RootState) => state.pharmacy.status
 export default PharmacySlice.reducer

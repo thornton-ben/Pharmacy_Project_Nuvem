@@ -45,7 +45,7 @@ namespace PharmacyProj.Services.Services
                 Id = pharmacy.PharmacyId
             };
             var existingPharmacyList = await GetPharmacyListAsync(queryParams);
-            var existingPharmacy = existingPharmacyList[0];
+            var existingPharmacy = existingPharmacyList.FirstOrDefault();
 
             if (existingPharmacy != null)
             {
@@ -58,7 +58,6 @@ namespace PharmacyProj.Services.Services
                 existingPharmacy.UpdatedDate = DateTime.UtcNow;
             }
             await _dbContext.SaveChangesAsync();
-            //need to have logic if pharmacy doesn't exist to create a new one
 
             return existingPharmacy ?? pharmacy;
         }

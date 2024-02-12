@@ -55,6 +55,6 @@ ORDER BY
     PharmacyName, 
     LastName, 
     RevenueRank;
-    END
+END
 GO
 

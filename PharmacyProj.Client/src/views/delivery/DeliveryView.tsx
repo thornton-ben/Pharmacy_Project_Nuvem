@@ -6,19 +6,14 @@ import {
   putDelivery,
   updateDeliverySlice,
   getDeliveryStatus,
-  DeliverySlice,
-  getDeliveryError,
   getTotalDeliveryCount,
 } from "../../slicers/deliverySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { getParams } from "../../utilities/getParams"
 import {
-  GridRowsProp,
   GridRowModesModel,
-  GridRowModes,
   DataGrid,
   GridColDef,
-  GridActionsCellItem,
   GridValueGetterParams,
   GridPreProcessEditCellProps,
 } from "@mui/x-data-grid"
@@ -38,7 +33,6 @@ export const DeliveryView = () => {
   const dispatch = useAppDispatch();
   const deliveryList = useAppSelector(getDeliveryData);
   const deliveryStatus = useSelector(getDeliveryStatus);
-  const deliveryError = useSelector(getDeliveryError);
   const [deliveryRows, setDeliveryRows] = useState(deliveryList);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
@@ -62,12 +56,7 @@ const getDeliveries = () => {
   dispatch(fetchDelivery({ pageSize: paginationModel.pageSize, page: paginationModel.page + 1, id: Number(pharmacyId) }))
 };
 
-// useEffect(() => {
-  //   dispatch(fetchDelivery(paginationParameters))
-  // }, [])
   useEffect(() => {
-    // how to update get parameters before fetching
-    // updatePaginationParameters()
     getDeliveries()
   }, [paginationModel])
 

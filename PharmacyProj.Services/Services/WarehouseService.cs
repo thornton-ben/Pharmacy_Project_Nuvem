@@ -22,8 +22,6 @@ namespace PharmacyProj.Services.Services
 
         public async Task<List<Warehouse>> GetWarehouseListAsync(QueryParameters parameters)
         {
-            //TODO: insert new parameters to get deliveries for a pharmacy or warehouse
-            //insert logic to page
             if (parameters.Id == null)
             {
                 return await _dbContext.Warehouse.OrderBy(p => p.WarehouseId)
@@ -44,7 +42,8 @@ namespace PharmacyProj.Services.Services
                 Id = warehouse.WarehouseId
             };
             var existingWarehouseList = await GetWarehouseListAsync(queryParams);
-            var existingWarehouse = existingWarehouseList[0];
+            var existingWarehouse = existingWarehouseList.FirstOrDefault();
+
 
             if (existingWarehouse != null)
             {
@@ -55,7 +54,6 @@ namespace PharmacyProj.Services.Services
                 existingWarehouse.UpdatedDate = DateTime.UtcNow;
             }
             await _dbContext.SaveChangesAsync();
-            //need to have logic if warehouse doesn't exist to create a new one
 
             return existingWarehouse ?? warehouse;
         }

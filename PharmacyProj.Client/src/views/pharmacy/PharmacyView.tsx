@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./PharmacyView.css"
 import {
   getPharmacyData,
@@ -8,9 +8,7 @@ import {
   getPharmacyStatus,
 } from "../../slicers/pharmacySlice"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
-import { getParams } from "../../utilities/getParams"
 import {
-  GridRowsProp,
   GridRowModesModel,
   GridRowModes,
   DataGrid,
@@ -23,7 +21,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit"
 import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
-import { Save, Close, Edit, LocalShippingOutlined } from "@mui/icons-material"
+import { LocalShippingOutlined } from "@mui/icons-material"
 import Snackbar from "@mui/material/Snackbar"
 import Alert, { AlertProps } from "@mui/material/Alert"
 import IPharmacy from "../../interfaces/IPharmacy"
@@ -252,7 +250,6 @@ export const PharmacyView = () => {
           rowModesModel={rowModesModel}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
-          // onRowModesModelChange={(rowModesModel) => handleRowModesModelChange(rowModesModel, setRowModesModel)}
           onProcessRowUpdateError={(error) =>
             handleProcessRowUpdateError(setSnackbar, error)
           }
