@@ -27,14 +27,3 @@ namespace PharmacyProj.Services.DTO
         public string? WarehouseName { get; set; }
     }
 }
-//PharmacyDisplayResult<T> : IDisplayResult<T> where T : Pharmacy
-//{
-//    public int TotalCount { get; set; }
-//public IEnumerable<T>? List { get; set; }
-//}
-
-//public interface IDisplayResult<T> where T : class
-//{
-//    IEnumerable<T>? List { get; set; }
-//    int TotalCount { get; set; }
-//}
