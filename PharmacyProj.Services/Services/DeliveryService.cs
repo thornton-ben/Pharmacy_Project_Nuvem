@@ -74,7 +74,7 @@ namespace PharmacyProj.Services.Services
                 Id = delivery.DeliveryId
             };
             var existingDeliveryList = await GetDeliveryAsync(queryParams);
-            var existingDelivery = existingDeliveryList.FirstOrDefault();
+            var existingDelivery = existingDeliveryList?.FirstOrDefault();
 
             if (existingDelivery != null)
             {

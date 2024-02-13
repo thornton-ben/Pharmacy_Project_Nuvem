@@ -42,7 +42,7 @@ namespace PharmacyProj.Services.Services
                 Id = warehouse.WarehouseId
             };
             var existingWarehouseList = await GetWarehouseListAsync(queryParams);
-            var existingWarehouse = existingWarehouseList.FirstOrDefault();
+            var existingWarehouse = existingWarehouseList?.FirstOrDefault();
 
 
             if (existingWarehouse != null)

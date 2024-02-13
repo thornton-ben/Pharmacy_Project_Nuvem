@@ -42,7 +42,7 @@ namespace PharmacyProj.Services.Services
                 Id = pharmacist.PharmacistId
             };
             var existingPharmacistList = await GetPharmacistListAsync(queryParams);
-            var existingPharmacist = existingPharmacistList.FirstOrDefault();
+            var existingPharmacist = existingPharmacistList?.FirstOrDefault();
 
             if (existingPharmacist != null)
             {

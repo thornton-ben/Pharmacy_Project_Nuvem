@@ -42,7 +42,7 @@ namespace PharmacyProj.Services.Services
                 Id = pharmacySale.PharmacySaleId
             };
             var existingPharmacySaleList = await GetPharmacySaleListAsync(queryParams);
-            var existingPharmacySale = existingPharmacySaleList.FirstOrDefault();
+            var existingPharmacySale = existingPharmacySaleList?.FirstOrDefault();
 
             if (existingPharmacySale != null)
             {

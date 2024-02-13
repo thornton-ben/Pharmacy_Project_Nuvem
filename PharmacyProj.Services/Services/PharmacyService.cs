@@ -45,7 +45,7 @@ namespace PharmacyProj.Services.Services
                 Id = pharmacy.PharmacyId
             };
             var existingPharmacyList = await GetPharmacyListAsync(queryParams);
-            var existingPharmacy = existingPharmacyList.FirstOrDefault();
+            var existingPharmacy = existingPharmacyList?.FirstOrDefault();
 
             if (existingPharmacy != null)
             {
