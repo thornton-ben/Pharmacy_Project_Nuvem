@@ -30,31 +30,42 @@ import {
 import formatUSCurrency from "../../utilities/formatters/currencyFormatter"
 
 export const DeliveryView = () => {
-  const dispatch = useAppDispatch();
-  const deliveryList = useAppSelector(getDeliveryData);
-  const deliveryStatus = useSelector(getDeliveryStatus);
-  const [deliveryRows, setDeliveryRows] = useState(deliveryList);
+  const dispatch = useAppDispatch()
+  const deliveryList = useAppSelector(getDeliveryData)
+  const deliveryStatus = useSelector(getDeliveryStatus)
+  const [deliveryRows, setDeliveryRows] = useState(deliveryList)
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {},
-  );
-  const totalDeliveryCount = useSelector(getTotalDeliveryCount);
+  )
+  const totalDeliveryCount = useSelector(getTotalDeliveryCount)
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 5,
-  });
-  const { pharmacyId } = useParams<{ pharmacyId: string }>();
-  const [paginationParameters, setPaginationParameters] = React.useState<getParams>({
-    pageSize: 5,
-    page: 1,
-    id: Number(pharmacyId)
-});
-const updatePaginationParameters = () => {
-  setPaginationParameters({...paginationParameters, page: paginationModel.page + 1, pageSize: paginationModel.pageSize})
-}
+  })
+  const { pharmacyId } = useParams<{ pharmacyId: string }>()
+  const [paginationParameters, setPaginationParameters] =
+    React.useState<getParams>({
+      pageSize: 5,
+      page: 1,
+      id: Number(pharmacyId),
+    })
+  const updatePaginationParameters = () => {
+    setPaginationParameters({
+      ...paginationParameters,
+      page: paginationModel.page + 1,
+      pageSize: paginationModel.pageSize,
+    })
+  }
 
-const getDeliveries = () => {
-  dispatch(fetchDelivery({ pageSize: paginationModel.pageSize, page: paginationModel.page + 1, id: Number(pharmacyId) }))
-};
+  const getDeliveries = () => {
+    dispatch(
+      fetchDelivery({
+        pageSize: paginationModel.pageSize,
+        page: paginationModel.page + 1,
+        id: Number(pharmacyId),
+      }),
+    )
+  }
 
   useEffect(() => {
     getDeliveries()
@@ -91,7 +102,9 @@ const getDeliveries = () => {
     {
       field: "warehouseName",
       headerName: "Warehouse",
-      width: 130,
+      flex: 1.5,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -105,7 +118,9 @@ const getDeliveries = () => {
     {
       field: "pharmacyName",
       headerName: "Pharmacy",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -119,7 +134,9 @@ const getDeliveries = () => {
     {
       field: "drugName",
       headerName: "Drug",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -133,7 +150,9 @@ const getDeliveries = () => {
     {
       field: "unitCount",
       headerName: "UnitCount",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length != 2
@@ -147,7 +166,9 @@ const getDeliveries = () => {
     {
       field: "unitPrice",
       headerName: "UnitPrice",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       valueFormatter: (params) => formatUSCurrency(params.value),
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -162,7 +183,9 @@ const getDeliveries = () => {
     {
       field: "totalPrice",
       headerName: "TotalPrice",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       valueFormatter: (params) => formatUSCurrency(params.value),
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
@@ -177,10 +200,10 @@ const getDeliveries = () => {
     {
       field: "lastUpdated",
       headerName: "Last Updated",
-      width: 130,
-      type: "date",
-      headerAlign: "center",
+      flex: 1,
       align: "center",
+      headerAlign: "center",
+      type: "date",
       editable: false,
       valueGetter: (params: GridValueGetterParams) => {
         return params.row.updatedDate
@@ -192,39 +215,41 @@ const getDeliveries = () => {
 
   return (
     <>
-      <div>Delivery View</div>
+      <div className="title">Delivery View</div>
       <div className="container-xxl">
-        {deliveryStatus === "loading" && <Loading></Loading>}
-        <DataGrid
-          rows={deliveryRows}
-          getRowId={(p) => p.deliveryId}
-          columns={columns}
-          editMode="row"
-          rowModesModel={rowModesModel}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          paginationModel={paginationModel}
-          rowCount={totalDeliveryCount}
-          onPaginationModelChange={setPaginationModel}
-          paginationMode="server"
-          onProcessRowUpdateError={(error) =>
-            handleProcessRowUpdateError(setSnackbar, error)
-          }
-          pageSizeOptions={[5]}
-          slotProps={{
-            toolbar: { setDeliveryRows, setRowModesModel },
-          }}
-        />
-        {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
-            <Alert {...snackbar} onClose={handleCloseSnackbar} />
-          </Snackbar>
-        )}
+        <div className="flex-col">
+          {deliveryStatus === "loading" && <Loading></Loading>}
+          <DataGrid
+            rows={deliveryRows}
+            getRowId={(p) => p.deliveryId}
+            columns={columns}
+            editMode="row"
+            rowModesModel={rowModesModel}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
+            paginationModel={paginationModel}
+            rowCount={totalDeliveryCount}
+            onPaginationModelChange={setPaginationModel}
+            paginationMode="server"
+            onProcessRowUpdateError={(error) =>
+              handleProcessRowUpdateError(setSnackbar, error)
+            }
+            pageSizeOptions={[5]}
+            slotProps={{
+              toolbar: { setDeliveryRows, setRowModesModel },
+            }}
+          />
+          {!!snackbar && (
+            <Snackbar
+              open
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClose={handleCloseSnackbar}
+              autoHideDuration={6000}
+            >
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
+          )}
+        </div>
       </div>
     </>
   )

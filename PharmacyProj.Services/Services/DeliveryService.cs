@@ -86,6 +86,11 @@ namespace PharmacyProj.Services.Services
                 existingDelivery.TotalPrice = delivery.TotalPrice is not null ? delivery.TotalPrice : existingDelivery.TotalPrice;
                 existingDelivery.UpdatedDate = DateTime.UtcNow;
             }
+            else
+            {
+                _dbContext.Delivery.Add(delivery);
+            }
+
             await _dbContext.SaveChangesAsync();
 
             return existingDelivery ?? delivery;

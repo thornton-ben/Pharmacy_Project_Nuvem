@@ -76,7 +76,7 @@ export const PharmacyView = () => {
     {
       field: "name",
       headerName: "Name",
-      width: 130,
+      width: 150,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -90,7 +90,9 @@ export const PharmacyView = () => {
     {
       field: "address",
       headerName: "Address",
-      width: 130,
+      flex: 1.5,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -104,7 +106,9 @@ export const PharmacyView = () => {
     {
       field: "city",
       headerName: "City",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length == 0
@@ -118,7 +122,9 @@ export const PharmacyView = () => {
     {
       field: "state",
       headerName: "State",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length != 2
@@ -132,7 +138,9 @@ export const PharmacyView = () => {
     {
       field: "zip",
       headerName: "Zip Code",
-      width: 130,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length != 5
@@ -146,7 +154,9 @@ export const PharmacyView = () => {
     {
       field: "filledPrescriptions",
       headerName: "Filled Perscriptions",
-      width: 130,
+      width: 150,
+      align: "center",
+      headerAlign: "center",
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value < 0 || params.props.value == null
@@ -160,7 +170,7 @@ export const PharmacyView = () => {
     {
       field: "lastUpdated",
       headerName: "Last Updated",
-      width: 130,
+      flex: 1,
       type: "date",
       headerAlign: "center",
       align: "center",
@@ -176,6 +186,8 @@ export const PharmacyView = () => {
       type: "actions",
       headerName: "Actions",
       width: 100,
+      align: "right",
+      headerAlign: "right",
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
@@ -227,10 +239,10 @@ export const PharmacyView = () => {
                 handleEditClick(id, rowModesModel, setRowModesModel)
               }
               color="inherit"
-            />            
+            />
             <Link to={`/delivery/${id}`} className="text-black">
               <LocalShippingOutlined />
-            </Link>            
+            </Link>
           </>,
         ]
       },
@@ -239,38 +251,40 @@ export const PharmacyView = () => {
 
   return (
     <>
-      <div>Pharmacy View</div>
+      <div className="title">Pharmacy View</div>
       <div className="container-xxl">
-        {stateStatus === "loading" && <Loading></Loading>}
-        <DataGrid
-          rows={pharmacyRows}
-          getRowId={(p) => p.pharmacyId}
-          columns={columns}
-          editMode="row"
-          rowModesModel={rowModesModel}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={(error) =>
-            handleProcessRowUpdateError(setSnackbar, error)
-          }
-          pageSizeOptions={[5]}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
-          slotProps={{
-            toolbar: { setPharmacyRows, setRowModesModel },
-          }}
-        />
-        {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
-            <Alert {...snackbar} onClose={handleCloseSnackbar} />
-          </Snackbar>
-        )}
+        <div className="flex-col">
+          {stateStatus === "loading" && <Loading></Loading>}
+          <DataGrid
+            rows={pharmacyRows}
+            getRowId={(p) => p.pharmacyId}
+            columns={columns}
+            editMode="row"
+            rowModesModel={rowModesModel}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={(error) =>
+              handleProcessRowUpdateError(setSnackbar, error)
+            }
+            pageSizeOptions={[5]}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 5 } },
+            }}
+            slotProps={{
+              toolbar: { setPharmacyRows, setRowModesModel },
+            }}
+          />
+          {!!snackbar && (
+            <Snackbar
+              open
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClose={handleCloseSnackbar}
+              autoHideDuration={6000}
+            >
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
+          )}
+        </div>
       </div>
     </>
   )
